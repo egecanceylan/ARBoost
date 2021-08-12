@@ -24,8 +24,8 @@ public class ArActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar);
 
-        Intent intent = getIntent();
-        CardModel cardmodel = intent.getParcelableExtra("cardModel");
+//        Intent intent = getIntent();
+//        CardModel cardmodel = intent.getParcelableExtra("cardModel");
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 

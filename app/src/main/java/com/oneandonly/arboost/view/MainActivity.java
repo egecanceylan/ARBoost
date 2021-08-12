@@ -48,17 +48,19 @@ public class MainActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent scanIntent = new Intent(MainActivity.this, CardIOActivity.class);
-
-                // customize these values to suit your needs.
-                scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true); // default: false  || True seçersek ek doğrulama ekranına gitmiyor.
-                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false  || Expiry date'i istiyorsak true yapmamız lazım
-                scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false); // default: true
-                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
-                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
-
-                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
-                startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
+                Intent intent = new Intent(MainActivity.this, ArActivity.class);
+                startActivity(intent);
+//                Intent scanIntent = new Intent(MainActivity.this, CardIOActivity.class);
+//
+//                // customize these values to suit your needs.
+//                scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true); // default: false  || True seçersek ek doğrulama ekranına gitmiyor.
+//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false  || Expiry date'i istiyorsak true yapmamız lazım
+//                scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false); // default: true
+//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+//
+//                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
+//                startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
             }
         });
 
