@@ -48,19 +48,17 @@ public class MainActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ArActivity.class);
-                startActivity(intent);
-//                Intent scanIntent = new Intent(MainActivity.this, CardIOActivity.class);
-//
-//                // customize these values to suit your needs.
-//                scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true); // default: false  || True seçersek ek doğrulama ekranına gitmiyor.
-//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false  || Expiry date'i istiyorsak true yapmamız lazım
-//                scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false); // default: true
-//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
-//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
-//
-//                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
-//                startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
+                Intent scanIntent = new Intent(MainActivity.this, CardIOActivity.class);
+
+                // customize these values to suit your needs.
+                scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true); // default: false  || True seçersek ek doğrulama ekranına gitmiyor.
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false  || Expiry date'i istiyorsak true yapmamız lazım
+                scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false); // default: true
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+
+                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
+                startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
             }
         });
 
@@ -105,12 +103,10 @@ public class MainActivity extends AppCompatActivity {
             else {
                 resultDisplayStr = "Scan was canceled.";
             }
-            // do something with resultDisplayStr, maybe display it in a textView
-            // resultTextView.setText(resultDisplayStr);
-            //System.out.println(resultDisplayStr);
 
-            resultDisplayStr = "4543 6074 7905 1706";
-            resultDisplayStr = resultDisplayStr.replace(" ", "");
+            // resultDisplayStr comes as Cardnumber:xxxx xxxx xxxx xxxx we change it to
+            // xxxxxxxxxxxxxxxx format in order to make API call
+            resultDisplayStr = resultDisplayStr.split(":")[1].replace(" ", "").substring(0, 16);
 
             Call<JsonObject> call = cardAPI.getCard(resultDisplayStr);
             call.enqueue(new Callback<JsonObject>() {
