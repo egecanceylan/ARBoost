@@ -4,52 +4,31 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CardModel implements Parcelable {
-    private String cardNumber, cutOffDate, paymentDueDate, expireDate, eAccountStatement;
+    private String cardNumber, cutOffDate, paymentDueDate, expireDate, eAccountStatement, accountNumber, type;
     private UserModel user;
-    private double accountLimit, debt;
+    private double accountLimit, debt, balance, flexibleAccountLimit;
     private boolean isContactless, isEcom, mailOrder;
 
-    public CardModel(String cardNumber, String cutOffDate,
-                     String paymentDueDate, String expireDate, String eAccountStatement,
-                     UserModel user, double accountLimit, double debt, boolean isContactless, boolean isEcom, boolean mailOrder) {
+    public CardModel(String cardNumber, String cutOffDate, String paymentDueDate, String expireDate, String eAccountStatement, String accountNumber,
+                     String type, UserModel user, double accountLimit, double debt,
+                     double balance, double flexibleAccountLimit, boolean isContactless,
+                     boolean isEcom, boolean mailOrder) {
         this.cardNumber = cardNumber;
         this.cutOffDate = cutOffDate;
         this.paymentDueDate = paymentDueDate;
         this.expireDate = expireDate;
         this.eAccountStatement = eAccountStatement;
+        this.accountNumber = accountNumber;
+        this.type = type;
         this.user = user;
         this.accountLimit = accountLimit;
         this.debt = debt;
+        this.balance = balance;
+        this.flexibleAccountLimit = flexibleAccountLimit;
         this.isContactless = isContactless;
         this.isEcom = isEcom;
         this.mailOrder = mailOrder;
     }
-
-    protected CardModel(Parcel in) {
-        cardNumber = in.readString();
-        cutOffDate = in.readString();
-        paymentDueDate = in.readString();
-        expireDate = in.readString();
-        eAccountStatement = in.readString();
-        user = in.readParcelable(UserModel.class.getClassLoader());
-        accountLimit = in.readDouble();
-        debt = in.readDouble();
-        isContactless = in.readByte() != 0;
-        isEcom = in.readByte() != 0;
-        mailOrder = in.readByte() != 0;
-    }
-
-    public static final Creator<CardModel> CREATOR = new Creator<CardModel>() {
-        @Override
-        public CardModel createFromParcel(Parcel in) {
-            return new CardModel(in);
-        }
-
-        @Override
-        public CardModel[] newArray(int size) {
-            return new CardModel[size];
-        }
-    };
 
     public String getCardNumber() {
         return cardNumber;
@@ -91,6 +70,22 @@ public class CardModel implements Parcelable {
         this.eAccountStatement = eAccountStatement;
     }
 
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public UserModel getUser() {
         return user;
     }
@@ -113,6 +108,22 @@ public class CardModel implements Parcelable {
 
     public void setDebt(double debt) {
         this.debt = debt;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getFlexibleAccountLimit() {
+        return flexibleAccountLimit;
+    }
+
+    public void setFlexibleAccountLimit(double flexibleAccountLimit) {
+        this.flexibleAccountLimit = flexibleAccountLimit;
     }
 
     public boolean isContactless() {
@@ -139,23 +150,61 @@ public class CardModel implements Parcelable {
         this.mailOrder = mailOrder;
     }
 
+    public static Creator<CardModel> getCREATOR() {
+        return CREATOR;
+    }
+
+    protected CardModel(Parcel in) {
+        cardNumber = in.readString();
+        cutOffDate = in.readString();
+        paymentDueDate = in.readString();
+        expireDate = in.readString();
+        eAccountStatement = in.readString();
+        accountNumber = in.readString();
+        type = in.readString();
+        user = in.readParcelable(UserModel.class.getClassLoader());
+        accountLimit = in.readDouble();
+        debt = in.readDouble();
+        balance = in.readDouble();
+        flexibleAccountLimit = in.readDouble();
+        isContactless = in.readByte() != 0;
+        isEcom = in.readByte() != 0;
+        mailOrder = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(cardNumber);
+        dest.writeString(cutOffDate);
+        dest.writeString(paymentDueDate);
+        dest.writeString(expireDate);
+        dest.writeString(eAccountStatement);
+        dest.writeString(accountNumber);
+        dest.writeString(type);
+        dest.writeParcelable(user, flags);
+        dest.writeDouble(accountLimit);
+        dest.writeDouble(debt);
+        dest.writeDouble(balance);
+        dest.writeDouble(flexibleAccountLimit);
+        dest.writeByte((byte) (isContactless ? 1 : 0));
+        dest.writeByte((byte) (isEcom ? 1 : 0));
+        dest.writeByte((byte) (mailOrder ? 1 : 0));
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(cardNumber);
-        parcel.writeString(cutOffDate);
-        parcel.writeString(paymentDueDate);
-        parcel.writeString(expireDate);
-        parcel.writeString(eAccountStatement);
-        parcel.writeParcelable(user, i);
-        parcel.writeDouble(accountLimit);
-        parcel.writeDouble(debt);
-        parcel.writeByte((byte) (isContactless ? 1 : 0));
-        parcel.writeByte((byte) (isEcom ? 1 : 0));
-        parcel.writeByte((byte) (mailOrder ? 1 : 0));
-    }
+    public static final Creator<CardModel> CREATOR = new Creator<CardModel>() {
+        @Override
+        public CardModel createFromParcel(Parcel in) {
+            return new CardModel(in);
+        }
+
+        @Override
+        public CardModel[] newArray(int size) {
+            return new CardModel[size];
+        }
+    };
 }

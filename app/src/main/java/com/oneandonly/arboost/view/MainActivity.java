@@ -18,6 +18,8 @@ import com.oneandonly.arboost.service.RetrofitClient;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 import retrofit2.Call;
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             // resultTextView.setText(resultDisplayStr);
             //System.out.println(resultDisplayStr);
 
-//            resultDisplayStr = "4543 6074 7905 1706";
+            resultDisplayStr = "4543 6074 7905 1706";
             resultDisplayStr = resultDisplayStr.replace(" ", "");
 
             Call<JsonObject> call = cardAPI.getCard(resultDisplayStr);
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     if(response.isSuccessful()){
                         if(response.body() != null){
                             JsonObject body = response.body();
+                            System.out.println(body);
 
                             // User information
                             JsonObject user = (JsonObject) body.get("user_id");
@@ -145,13 +148,17 @@ public class MainActivity extends AppCompatActivity {
                             String paymentDueDate = body.get("payment_due_date").getAsString().split("T")[0];
                             String expireDate = body.get("expire_date").getAsString().split("T")[0];
                             String eAccountStatement = body.get("e_account_statement").getAsString();
+                            String type = body.get("type").isJsonNull() ? "null" : body.get("type").getAsString();
+                            String accountNumber = body.get("account_number").isJsonNull() ? "null" : body.get("account_number").getAsString();
+                            double balance = body.get("balance").isJsonNull() ? 0 : body.get("balance").getAsDouble();
+                            double flexibleAccountLimit = body.get("flexible_account_limit").isJsonNull() ? 0 : body.get("flexible_account_limit").getAsDouble();
                             boolean isContactless = body.get("is_contactless").getAsBoolean();
                             boolean isEcom = body.get("is_ecom").getAsBoolean();
                             boolean mailOrder = body.get("mail_order").getAsBoolean();
 
                             CardModel cardModel = new CardModel(cardNumber, cutoffDate, paymentDueDate, expireDate,
-                                    eAccountStatement, userModel, accountLimit,
-                                    debt, isContactless, isEcom, mailOrder);
+                                    eAccountStatement, accountNumber, type, userModel, accountLimit,
+                                    debt, balance, flexibleAccountLimit, isContactless, isEcom, mailOrder);
 
                             Intent intent = new Intent(MainActivity.this, ArActivity.class);
                             intent.putExtra("cardModel", cardModel);
