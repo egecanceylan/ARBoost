@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#404040"
-    android:orientation="vertical">
+    android:background="#404040">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/credit_card_details_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
-
 
         <ImageView
             android:id="@+id/card_transactions"
@@ -24,8 +22,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:padding="10dp"
-            />
+            android:padding="10dp" />
 
         <ImageView
             android:id="@+id/bills"
@@ -49,7 +46,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteY="0dp"
             android:padding="10dp"
-            android:background="@drawable/selected_tab"/>
+            android:background="@drawable/selected_tab" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -60,34 +57,29 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/separator_line"
-        />
+        android:layout_below="@id/credit_card_details_header" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#707070"
+        android:background="@drawable/bottom_radius"
         android:layout_marginHorizontal="20dp"
         android:paddingHorizontal="10dp"
         android:paddingBottom="20dp"
         android:layout_marginBottom="20dp"
-        >
-
+        android:layout_below="@id/separator_line">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/card_details_text"
             android:text="Kart Detayı"
-            android:fontFamily="@font/FiraSansSemiBold"
-            android:textSize="27dp"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textSize="15dp"
             android:textColor="@color/white"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"
-
-            />
-
-
+            android:layout_marginLeft="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,12 +92,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/card_details_text_2"
                 android:text="Temassız Ödeme"
-                android:fontFamily="@font/FiraSansSemiBold"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
-                android:textColor="@color/white"
-                />
+                android:textSize="10dp"
+                android:textColor="@color/white" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -118,30 +109,27 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="11dp"
                     android:background="@drawable/green_circle"
-                    android:layout_alignParentRight="true"
-
-                    />
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:id="@+id/card_details_layout_3">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card_details_text_3"
                 android:text="İnternet Alışverişi (e-Ticaret) Yetkisi"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/FiraSansSemiBold"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
-                android:textColor="@color/white"/>
+                android:textSize="10dp"
+                android:textColor="@color/white" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -154,31 +142,27 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="21dp"
                     android:background="@drawable/white_circle"
-                    android:layout_alignParentRight="true"
-
-                    />
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:id="@+id/card_details_layout_4">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card_details_text_4"
                 android:text="Talimatlı Alışveriş (Mail Order) Yetkisi"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/FiraSansSemiBold"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
-                android:textColor="@color/white"/>
+                android:textSize="10dp"
+                android:textColor="@color/white" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -191,20 +175,17 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="21dp"
                     android:background="@drawable/white_circle"
-                    android:layout_alignParentRight="true"
-
-                    />
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:id="@+id/card_details_layout_5">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -212,8 +193,8 @@
                 android:text="Kredi Kartına Otomatik Ödeme Talimatı"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
-                android:fontFamily="@font/FiraSansSemiBold"
-                android:textSize="16dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textSize="10dp"
                 android:textColor="@color/white"/>
 
             <RelativeLayout
@@ -227,30 +208,28 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="21dp"
                     android:background="@drawable/green_circle"
-                    android:layout_alignParentRight="true"
-
-                    />
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:id="@+id/card_details_layout_6">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card_details_text_6"
                 android:text="Döviz Hesap Özeti Talimatı"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/FiraSansSemiBold"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
+                android:textSize="10dp"
                 android:textColor="@color/white"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -262,30 +241,28 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="21dp"
                     android:background="@drawable/white_circle"
-                    android:layout_alignParentRight="true"
-
-                    />
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:id="@+id/card_details_layout_7">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card_details_text_7"
                 android:text="E-Hesap Özeti Talimatı"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/FiraSansSemiBold"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
+                android:textSize="10dp"
                 android:textColor="@color/white"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -297,50 +274,44 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="21dp"
                     android:background="@drawable/green_circle"
-                    android:layout_alignParentRight="true"
-
-                    />
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:id="@+id/card_details_layout_8">
+            android:id="@+id/card_details_layout_8" >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card_details_text_8"
                 android:text="xxx.yyyy@yktteknoloji.com.tr"
                 android:layout_marginLeft="10dp"
-                android:textSize="15dp"
-                android:textColor="@color/white"/>
+                android:textSize="10dp"
+                android:textColor="@color/white" />
 
         </LinearLayout>
-
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:id="@+id/card_details_layout_9">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card_details_text_9"
                 android:text="Son Kullanma Tarihi"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/FiraSansSemiBold"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
+                android:textSize="10dp"
                 android:textColor="@color/white"/>
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -348,14 +319,12 @@
                 android:id="@+id/card_details_expiry_date_text"
                 android:text="27/12/2023"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/FiraSansSemiBold"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:gravity="right"
-                android:textSize="16dp"
+                android:textSize="10dp"
                 android:textColor="@color/white"/>
         </LinearLayout>
 
-
     </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

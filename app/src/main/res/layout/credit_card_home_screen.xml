@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    >
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_border"
+        >
+
+        <TextView
+            android:id="@+id/home_screen_card_limit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kullanılabilir Kart Limiti"
+            android:textSize="10dp"
+            android:textColor="#fff"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:id="@+id/home_screen_card_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="149.000,00 TL"
+            android:layout_below="@id/home_screen_card_limit_text"
+            android:textSize="25dp"
+            android:textColor="#fff"
+            android:layout_marginLeft="40dp" />
+
+        <TextView
+            android:id="@+id/home_screen_total_card_limit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toplam Kart Limiti"
+            android:layout_marginStart="40dp"
+            android:textColor="#fff"
+            android:layout_below="@id/home_screen_card_limit"
+            android:layout_marginTop="20dp"
+            android:textSize="10dp"/>
+
+        <TextView
+            android:id="@+id/home_screen_total_card_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="150.000,00 TL"
+            android:layout_marginStart="40dp"
+            android:textColor="#fff"
+            android:layout_below="@id/home_screen_total_card_limit_text"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp"
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:id="@+id/home_screen_current_debt_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Güncel Borç"
+            android:layout_marginEnd="80dp"
+            android:layout_toRightOf="@id/home_screen_total_card_limit_text"
+            android:layout_marginStart="40dp"
+            android:textColor="#fff"
+            android:layout_below="@id/home_screen_card_limit"
+            android:layout_marginTop="20dp"
+            android:textSize="10dp"/>
+
+        <TextView
+            android:id="@+id/home_screen_current_debt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.000,00 TL"
+            android:layout_marginStart="25dp"
+            android:layout_toRightOf="@id/home_screen_total_card_limit"
+            android:textColor="#fff"
+            android:layout_below="@id/home_screen_total_card_limit_text"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp"
+            android:layout_marginBottom="30dp"/>
+
+    </RelativeLayout>
+    
+</RelativeLayout>

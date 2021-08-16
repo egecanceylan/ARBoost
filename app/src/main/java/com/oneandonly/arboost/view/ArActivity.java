@@ -3,16 +3,16 @@ package com.oneandonly.arboost.view;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
+import com.google.ar.sceneform.ux.TransformableNode;
 import com.oneandonly.arboost.R;
-import com.oneandonly.arboost.models.CardModel;
 
 public class ArActivity extends AppCompatActivity {
 
@@ -50,7 +50,7 @@ public class ArActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void placeTextView(Anchor anchor) {
         ViewRenderable.builder()
-                .setView(this, R.layout.home_screen)
+                .setView(this, R.layout.debit_card_details)
                 .build()
                 .thenAccept(viewRenderable -> {
                     placeModel(viewRenderable, anchor);
@@ -59,7 +59,15 @@ public class ArActivity extends AppCompatActivity {
 
     private void placeModel(ViewRenderable viewRenderable, Anchor anchor) {
         AnchorNode anchorNode = new AnchorNode(anchor);
-        anchorNode.setRenderable(viewRenderable);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
+
+        TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
+//        node.getScaleController().setMaxScale(0.2f);
+//        node.getScaleController().setMinScale(0.01f);
+
+        node.setParent(anchorNode);
+        node.setRenderable(viewRenderable);
+        node.select();
+
     }
 }

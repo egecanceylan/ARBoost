@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/round_border">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:src="@drawable/hesaphareketleri"
+            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/selected_tab"
+            android:padding="10dp"
+            android:src="@drawable/borclar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView5" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:src="@drawable/kartbilgileri"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/separator_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/header_title"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator_line"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/round_border"
+        android:backgroundTint="#707070"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="20dp"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Borç Ödemeleri"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Güncel Borç"
+            android:layout_below="@id/text1"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textColor="#fff"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:id="@+id/debt_payments_current_debt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.000,00 TL"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_below="@id/text2"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toplam Borç"
+            android:layout_below="@id/text1"
+            android:layout_toRightOf="@id/text1"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textColor="#fff"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:id="@+id/debt_payments_total_debt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.500,00 TL"
+            android:layout_below="@id/text2"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_toRightOf="@id/text1"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/text5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Son Ödeme Tarihi"
+            android:layout_below="@id/debt_payments_current_debt"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textColor="#fff"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:id="@+id/debt_payments_last_payment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="06/09/2021"
+            android:layout_below="@id/text5"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/text6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hesap Kesim Tarihi"
+            android:layout_below="@id/debt_payments_current_debt"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_toRightOf="@id/text1"
+            android:textColor="#fff"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:id="@+id/debt_payments_cutoff_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="31/08/2021"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_below="@id/text5"
+            android:layout_toRightOf="@id/text1"
+            android:textColor="#fff"
+            android:lineSpacingExtra="@dimen/cardview_compat_inset_shadow"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
