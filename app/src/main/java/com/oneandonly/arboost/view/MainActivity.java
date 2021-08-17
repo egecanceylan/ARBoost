@@ -18,6 +18,7 @@ import com.oneandonly.arboost.service.RetrofitClient;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import io.card.payment.CardIOActivity;
@@ -48,9 +49,91 @@ public class MainActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ArActivity.class);
-//                intent.putExtra("cardModel", cardModel);
-                startActivity(intent);
+                String resultDisplayStr = "4943141382383861";
+                Call<JsonObject> call = cardAPI.getCard(resultDisplayStr, 1);
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            Response<JsonObject> response = call.execute();
+//                            System.out.println(response.code());
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//                thread.start();
+                call.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        System.out.println(call);
+                        if(response.isSuccessful()){
+                            System.out.println("success");
+                            if(response.body() != null){
+                                JsonObject body = response.body();
+                                System.out.println(body);
+
+                                // User information
+                                JsonObject user = (JsonObject) body.get("user_id");
+                                System.out.println(user);
+                                int userId = user.get("id").getAsInt();
+                                String name = user.get("name").getAsString();
+                                String surname = user.get("surname").getAsString();
+                                System.out.println(userId + " , " + name + " , " + surname);
+                                UserModel userModel = new UserModel(userId, name, surname);
+
+                                // Card information
+                                String cardNumber = body.get("card_number").getAsString();
+                                // In order to get xxxx xxxx xxxx xxxx format we use stringbuilder and
+                                // add blanks after every 4 numbers.
+                                StringBuilder sb = new StringBuilder();
+                                for (int i = 0; i < cardNumber.length(); i++) {
+                                    sb.append(cardNumber.charAt(i));
+                                    if ((i + 1) % 4 == 0 && i != cardNumber.length() - 1)
+                                        sb.append(" ");
+                                }
+                                cardNumber = sb.toString();
+                                double accountLimit = body.get("account_limit").getAsDouble();
+                                double debt = body.get("debt").getAsDouble();
+                                // cutoffDate, paymentDueDate and expireDate are formatted as 2021-08-06T17:45:52.217+00:00
+                                // we need only the date not the time so we split the text by 'T' and get
+                                // the first index.
+                                String cutoffDate = body.get("cutoff_date").getAsString().split("T")[0];
+                                String paymentDueDate = body.get("payment_due_date").getAsString().split("T")[0];
+                                String expireDate = body.get("expire_date").getAsString().split("T")[0];
+                                String eAccountStatement = body.get("e_account_statement").getAsString();
+                                String type = body.get("type").isJsonNull() ? "null" : body.get("type").getAsString();
+                                String accountNumber = body.get("account_number").isJsonNull() ? "null" : body.get("account_number").getAsString();
+                                double balance = body.get("balance").isJsonNull() ? 0 : body.get("balance").getAsDouble();
+                                double flexibleAccountLimit = body.get("flexible_account_limit").isJsonNull() ? 0 : body.get("flexible_account_limit").getAsDouble();
+                                boolean isContactless = body.get("is_contactless").getAsBoolean();
+                                boolean isEcom = body.get("is_ecom").getAsBoolean();
+                                boolean mailOrder = body.get("mail_order").getAsBoolean();
+
+                                CardModel cardModel = new CardModel(cardNumber, cutoffDate, paymentDueDate, expireDate,
+                                        eAccountStatement, accountNumber, type, userModel, accountLimit,
+                                        debt, balance, flexibleAccountLimit, isContactless, isEcom, mailOrder);
+
+                                Intent intent = new Intent(MainActivity.this, ArActivity.class);
+                                intent.putExtra("cardModel", cardModel);
+                                startActivity(intent);
+                            }
+                            else{
+                                System.out.println("Body NULL!!");
+                            }
+                        }
+                        else{
+//                            System.out.println(response.code());
+                            System.out.println("fail");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        System.out.println("Error!!");
+                        System.out.println(t.getMessage());
+                    }
+                });
 //                Intent scanIntent = new Intent(MainActivity.this, CardIOActivity.class);
 //
 //                // customize these values to suit your needs.
@@ -111,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             // xxxxxxxxxxxxxxxx format in order to make API call
             resultDisplayStr = resultDisplayStr.split(":")[1].replace(" ", "").substring(0, 16);
 
-            Call<JsonObject> call = cardAPI.getCard(resultDisplayStr);
+            Call<JsonObject> call = cardAPI.getCard(resultDisplayStr, 1);
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

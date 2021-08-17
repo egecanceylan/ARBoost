@@ -17,6 +17,6 @@ public interface CardAPI {
     String BASE_URL = "http://springbootawsrdsarboost-env.eba-zxetfam2.us-east-2.elasticbeanstalk.com/";
 
     @GET("card/info/{card_number}")
-    Call<JsonObject> getCard(@Path("card_number") String cardNumber);
+    Call<JsonObject> getCard(@Path("card_number") String cardNumber, @Query("id") Integer id);
 
 }
