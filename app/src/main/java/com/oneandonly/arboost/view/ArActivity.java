@@ -188,6 +188,7 @@ public class ArActivity extends AppCompatActivity {
 
 
 
+
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {

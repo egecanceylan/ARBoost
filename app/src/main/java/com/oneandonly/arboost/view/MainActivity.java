@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.oneandonly.arboost.R;
 import com.oneandonly.arboost.models.CardModel;
+import com.oneandonly.arboost.models.TransactionModel;
 import com.oneandonly.arboost.models.UserModel;
 import com.oneandonly.arboost.service.CardAPI;
 import com.oneandonly.arboost.service.RetrofitClient;

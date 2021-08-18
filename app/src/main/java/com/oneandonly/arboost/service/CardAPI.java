@@ -19,4 +19,5 @@ public interface CardAPI {
     @GET("card/info/{card_number}")
     Call<JsonObject> getCard(@Path("card_number") String cardNumber, @Query("id") Integer id);
 
+    //transaction/info/{card_number}
 }
