@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#404040">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/prepaid_card_details_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/card_transactions"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/selected_tab"
+            android:padding="10dp"
+            android:src="@drawable/account_activity"
+            app:layout_constraintEnd_toStartOf="@+id/card_info"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/card_info"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:src="@drawable/card_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/card_transactions"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/separator_line"
+        android:layout_below="@id/prepaid_card_details_header"
+        />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_transactions_layout"
+        android:orientation="vertical"
+        android:background="@drawable/bottom_radius"
+        android:layout_marginHorizontal="20dp"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/separator_line">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/card_transactions_text_info"
+            android:layout_height="wrap_content"
+            android:text="Kart Hareketleri"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/world_puan_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/rating_512_1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_world_puan_text"
+                android:layout_height="wrap_content"
+                android:text="World Puan"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/world_puan_icon"/>
+
+            <TextView
+                android:id="@+id/card_transactions_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="4000"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bugün"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:id="@+id/today"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/clothing_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clothing_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_2"
+                android:layout_height="wrap_content"
+                android:text="Pull &amp; Bear"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/clothing_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_today_payment_1"
+                android:text="-129,90 TL"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_3">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/coffe_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/coffee_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_3"
+                android:layout_height="wrap_content"
+                android:text="Starbucks"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/coffe_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_today_payment_2"
+                android:text="-42,55 TL"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_4" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/gasstation_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/gasstation"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_4"
+                android:layout_height="wrap_content"
+                android:text="Opet"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/gasstation_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_today_payment_3"
+                android:text="-200,00 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_5" >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/organization_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/organization_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_5"
+                android:layout_height="wrap_content"
+                android:text="Yapı Kredi Maaş Öde.."
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/organization_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_today_payment_4"
+                android:text="+2763,77 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dün"
+            android:id="@+id/yesterday"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_6" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/person_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/person"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_6"
+                android:layout_height="wrap_content"
+                android:text="John Doe EFT"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/person_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_yesterday_payment_1"
+                android:text="+500,00 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_7" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/phone_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/phone_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_7"
+                android:layout_height="wrap_content"
+                android:text="Vodafone"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/phone_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_yesterday_payment_2"
+                android:text="-99,90 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_8" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/restaurant_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/restaurant_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_8"
+                android:layout_height="wrap_content"
+                android:text="Sushico"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/restaurant_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_yesterday_payment_3"
+                android:text="-332,60 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/early_date"
+            android:layout_height="wrap_content"
+            android:text="28.07.2021"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_9" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/bill_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bill_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_9"
+                android:layout_height="wrap_content"
+                android:text="IGDAŞ Doğalgaz"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/bill_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_early_payment_1"
+                android:text="-175,67 TL"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_10" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/shop_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shop_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_10"
+                android:layout_height="wrap_content"
+                android:text="Miniso"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/shop_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_early_payment_2"
+                android:text="-229,85 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/card_transactions_layout_11" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/shopping_icon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shopping_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/card_transactions_text_11"
+                android:layout_height="wrap_content"
+                android:text="Migros"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/shopping_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_transactions_early_payment_3"
+                android:text="-344,76 TL"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

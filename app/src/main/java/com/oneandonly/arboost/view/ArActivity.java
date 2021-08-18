@@ -146,11 +146,50 @@ public class ArActivity extends AppCompatActivity {
         debitCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
 
 
+        //Prepaid Card Home Screen with db values
+        View prepaidCardHomeScreen = layoutInflater.inflate(R.layout.prepaid_card_home_screen, null);
+
+        TextView prepaidCardBalance = prepaidCardHomeScreen.findViewById(R.id.prepaid_card_home_screen_balance);
+        TextView prepaidCardExpiryDateHome = prepaidCardHomeScreen.findViewById(R.id.prepaid_card_home_screen_expiry_date);
+
+        prepaidCardBalance.setText(String.valueOf(cardmodel.getBalance()));
+        prepaidCardExpiryDateHome.setText(String.valueOf(cardmodel.getExpireDate()));
+
+        //Prepaid Card Details Screen with db values
+        View prepaidCardDetailsScreen = layoutInflater.inflate(R.layout.prepaid_card_details, null);
+
+        View prepaidCardContactlessCircle = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_contactless_circle);
+        View prepaidCardEcomCircle = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_ecom_circle);
+        View prepaidCardMailOrderCircle = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_account_sum_circle);
+        TextView prepaidCardEmail = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_screen_email);
+        TextView prepaidCardExpiryDateDetails = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_expiry_date);
+
+        if(cardmodel.isContactless() == true) {
+            prepaidCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+        }else{
+            prepaidCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }
+        if(cardmodel.isEcom() == true) {
+            prepaidCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+        }else{
+            prepaidCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }
+        if(cardmodel.isMailOrder() == true) {
+            prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+        }else{
+            prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }
+        prepaidCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
+        prepaidCardExpiryDateDetails.setText(String.valueOf(cardmodel.getExpireDate()));
+
+
+
+
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            placeTextView(hitResult.createAnchor(), debitCardCardDetailsScreen);
+            placeTextView(hitResult.createAnchor(), prepaidCardDetailsScreen);
         });
 
 //        System.out.println(cardmodel.getCardNumber());

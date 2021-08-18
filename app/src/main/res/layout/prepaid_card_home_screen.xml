@@ -24,14 +24,14 @@
             android:layout_marginTop="30dp" />
 
         <TextView
-            android:id="@+id/home_screen_card_limit"
+            android:id="@+id/prepaid_card_home_screen_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="14.700,00 TL"
             android:layout_below="@id/home_screen_card_limit_text"
-            android:textSize="25dp"
+            android:layout_marginLeft="40dp"
+            android:text="14.700,00 TL"
             android:textColor="#fff"
-            android:layout_marginLeft="40dp" />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/home_screen_total_card_limit_text"
@@ -40,21 +40,21 @@
             android:text="Son Kullanma Tarihi"
             android:layout_marginStart="40dp"
             android:textColor="#fff"
-            android:layout_below="@id/home_screen_card_limit"
+            android:layout_below="@id/prepaid_card_home_screen_balance"
             android:layout_marginTop="20dp"
             android:textSize="10dp" />
 
         <TextView
-            android:id="@+id/home_screen_total_card_limit"
+            android:id="@+id/prepaid_card_home_screen_expiry_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="06/09/2021"
-            android:layout_marginStart="40dp"
-            android:textColor="#fff"
             android:layout_below="@id/home_screen_total_card_limit_text"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="5dp"
-            android:textSize="15dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:text="06/09/2021"
+            android:textColor="#fff"
+            android:textSize="15dp" />
 
     </RelativeLayout>
     
