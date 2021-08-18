@@ -91,13 +91,13 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/contactless_circle"
+                    android:id="@+id/debit_card_card_details_contactless_circle"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="11dp"
-                    android:background="@drawable/green_circle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/green_circle" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -124,13 +124,13 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/ecom_circle"
+                    android:id="@+id/debit_card_card_details_ecom_circle"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="21dp"
-                    android:background="@drawable/white_circle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/white_circle" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -157,13 +157,13 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/account_sum_circle"
+                    android:id="@+id/debit_card_card_details_account_sum_circle"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="21dp"
-                    android:background="@drawable/green_circle"
-                    android:layout_alignParentRight="true" />
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/green_circle" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -177,7 +177,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_details_text_8"
+                android:id="@+id/debit_card_card_details_screen_email"
                 android:text="xxx.yyyy@yktteknoloji.com.tr"
                 android:layout_marginLeft="10dp"
                 android:textSize="10dp"
@@ -205,7 +205,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_details_expiry_date_text"
+                android:id="@+id/debit_card_card_details_expiry_date"
                 android:text="27/12/2023"
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/fira_sans_semi_bold"

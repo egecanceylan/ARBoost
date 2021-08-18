@@ -92,12 +92,12 @@
             android:layout_marginTop="15dp" />
 
         <TextView
-            android:id="@+id/debt_payments_current_debt"
+            android:id="@+id/credit_card_debt_payments_screen_current_debt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1.000,00 TL"
-            android:fontFamily="@font/fira_sans_semi_bold"
             android:layout_below="@id/text2"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="1.000,00 TL"
             android:textColor="#fff"
             android:textSize="15dp" />
 
@@ -115,13 +115,13 @@
             android:layout_marginTop="15dp" />
 
         <TextView
-            android:id="@+id/debt_payments_total_debt"
+            android:id="@+id/credit_card_debt_payments_screen_total_debt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1.500,00 TL"
             android:layout_below="@id/text2"
-            android:fontFamily="@font/fira_sans_semi_bold"
             android:layout_toRightOf="@id/text1"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="1.500,00 TL"
             android:textColor="#fff"
             android:textSize="15dp" />
 
@@ -130,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Son Ödeme Tarihi"
-            android:layout_below="@id/debt_payments_current_debt"
+            android:layout_below="@id/credit_card_debt_payments_screen_current_debt"
             android:fontFamily="@font/fira_sans_semi_bold"
             android:textColor="#fff"
             android:textSize="10dp"
@@ -138,12 +138,12 @@
             android:layout_marginTop="15dp" />
 
         <TextView
-            android:id="@+id/debt_payments_last_payment_date"
+            android:id="@+id/credit_card_debt_payments_screen_last_payment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="06/09/2021"
             android:layout_below="@id/text5"
             android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="06/09/2021"
             android:textColor="#fff"
             android:textSize="15dp" />
 
@@ -152,7 +152,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hesap Kesim Tarihi"
-            android:layout_below="@id/debt_payments_current_debt"
+            android:layout_below="@id/credit_card_debt_payments_screen_current_debt"
             android:fontFamily="@font/fira_sans_semi_bold"
             android:layout_toRightOf="@id/text1"
             android:textColor="#fff"
@@ -161,15 +161,15 @@
             android:layout_marginTop="15dp" />
 
         <TextView
-            android:id="@+id/debt_payments_cutoff_date"
+            android:id="@+id/credit_card_debt_payments_screen_cutoff_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="31/08/2021"
-            android:fontFamily="@font/fira_sans_semi_bold"
             android:layout_below="@id/text5"
             android:layout_toRightOf="@id/text1"
-            android:textColor="#fff"
+            android:fontFamily="@font/fira_sans_semi_bold"
             android:lineSpacingExtra="@dimen/cardview_compat_inset_shadow"
+            android:text="31/08/2021"
+            android:textColor="#fff"
             android:textSize="15dp" />
 
     </RelativeLayout>
