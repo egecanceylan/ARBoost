@@ -10,23 +10,24 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_border"
-        >
+        android:background="@drawable/round_border">
 
         <TextView
             android:id="@+id/home_screen_card_limit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kullanılabilir Kart Limiti"
-            android:textSize="10dp"
-            android:textColor="#fff"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="30dp" />
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_marginTop="30dp"
+            android:text="Kullanılabilir Kart Limiti"
+            android:textColor="#fff"
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/credit_card_home_screen_card_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/fira_sans_semi_bold"
             android:layout_below="@id/home_screen_card_limit_text"
             android:layout_marginLeft="40dp"
             android:text="149.000,00 TL"
@@ -37,50 +38,54 @@
             android:id="@+id/home_screen_total_card_limit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Toplam Kart Limiti"
-            android:layout_marginStart="40dp"
-            android:textColor="#fff"
             android:layout_below="@id/credit_card_home_screen_card_limit"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="20dp"
-            android:textSize="10dp"/>
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="Toplam Kart Limiti"
+            android:textColor="#fff"
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/credit_card_home_screen_total_card_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="150.000,00 TL"
-            android:layout_marginStart="40dp"
-            android:textColor="#fff"
             android:layout_below="@id/home_screen_total_card_limit_text"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="5dp"
-            android:textSize="15dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="150.000,00 TL"
+            android:textColor="#fff"
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/home_screen_current_debt_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Güncel Borç"
+            android:layout_below="@id/credit_card_home_screen_card_limit"
+            android:layout_marginStart="45dp"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="80dp"
             android:layout_toRightOf="@id/home_screen_total_card_limit_text"
-            android:layout_marginStart="40dp"
+            android:text="Güncel Borç"
             android:textColor="#fff"
-            android:layout_below="@id/credit_card_home_screen_card_limit"
-            android:layout_marginTop="20dp"
-            android:textSize="10dp"/>
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/credit_card_home_screen_current_debt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1.000,00 TL"
-            android:layout_marginStart="25dp"
-            android:layout_toRightOf="@id/credit_card_home_screen_total_card_limit"
-            android:textColor="#fff"
             android:layout_below="@id/home_screen_total_card_limit_text"
+            android:layout_marginStart="45dp"
             android:layout_marginTop="5dp"
-            android:textSize="15dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:layout_toRightOf="@id/credit_card_home_screen_total_card_limit"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="1.000,00 TL"
+            android:textColor="#fff"
+            android:textSize="15dp" />
 
     </RelativeLayout>
     

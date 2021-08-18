@@ -34,17 +34,19 @@ public class ArActivity extends AppCompatActivity {
         Intent intent = getIntent();
         CardModel cardmodel = intent.getParcelableExtra("cardModel");
 
-        // Credit Card Home Screen with db values
         LayoutInflater layoutInflater = getLayoutInflater();
+
+        // Credit Card Home Screen with db values
         View creditCardHomeScreen = layoutInflater.inflate(R.layout.credit_card_home_screen, null);
 
         TextView creditCardDebt = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_current_debt);
         TextView creditCardCurrentLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_card_limit);
         TextView creditCardTotalLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_total_card_limit);
 
+        //double creditCardDebt = cardmodel.getDebt();
         creditCardDebt.setText(String.valueOf(cardmodel.getDebt()));
-        creditCardCurrentLimit.setText(String.valueOf(cardmodel.getAccountLimit()));
-        creditCardTotalLimit.setText(String.valueOf(cardmodel.getFlexibleAccountLimit()));
+        creditCardCurrentLimit.setText(String.valueOf(cardmodel.getAccountLimit()-cardmodel.getDebt()));
+        creditCardTotalLimit.setText(String.valueOf(cardmodel.getAccountLimit()));
 
 
 
@@ -189,7 +191,7 @@ public class ArActivity extends AppCompatActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            placeTextView(hitResult.createAnchor(), prepaidCardDetailsScreen);
+            placeTextView(hitResult.createAnchor(), creditCardHomeScreen);
         });
 
 //        System.out.println(cardmodel.getCardNumber());
