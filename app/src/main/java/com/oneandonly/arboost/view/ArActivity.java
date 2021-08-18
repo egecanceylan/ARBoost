@@ -33,6 +33,7 @@ public class ArActivity extends AppCompatActivity {
         Intent intent = getIntent();
         CardModel cardmodel = intent.getParcelableExtra("cardModel");
 
+        // Credit Card Home Screen with db values
         LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.credit_card_home_screen, null);
 
@@ -44,14 +45,16 @@ public class ArActivity extends AppCompatActivity {
         currentLimit.setText(String.valueOf(cardmodel.getAccountLimit()));
         totalLimit.setText(String.valueOf(cardmodel.getFlexibleAccountLimit()));
 
+//        view.setBackground(getResources().getDrawable(R.drawable.green_circle));
+
+        // Credit Card Debt Payments with db values
+
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             placeTextView(hitResult.createAnchor(), view);
         });
 
-
-//
 //        System.out.println(cardmodel.getCardNumber());
 //        System.out.println(cardmodel.getAccountLimit());
 //        System.out.println(cardmodel.getCutOffDate());
