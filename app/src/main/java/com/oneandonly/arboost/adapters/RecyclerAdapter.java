@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         TransactionModel model = models.get(position);
         holder.textViewStore.setText(model.getStore());
         holder.textViewAmount.setText(String.valueOf(model.getTotalAmount()));
+        String Sector = model.getSector();
+        switch (Sector) {
+            case "Coffee":
+                holder.imageView.setImageResource(R.drawable.coffee_icon);
+                break;
+            case "Clothing":
+                holder.imageView.setImageResource(R.drawable.clothing_icon);
+                break;
+            default:
+                holder.imageView.setImageResource(R.drawable.person);
+                break;
+        }
+
     }
 
     @Override
@@ -50,12 +64,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
         TextView textViewStore;
         TextView textViewAmount;
+        ImageView imageView;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
 
             textViewStore = itemView.findViewById(R.id.sample_layout_store);
             textViewAmount = itemView.findViewById(R.id.sample_layout_amount);
+            imageView = itemView.findViewById(R.id.card_icon);;
         }
     }
 }

@@ -48,7 +48,9 @@ public class ArActivity extends AppCompatActivity {
     private CardAPI transactionAPI;
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
-    private TextView worldPointText;
+    private TextView worldPointTextCredit;
+    private TextView worldPointTextDebit;
+    private TextView worldPointTextPrepaid;
     private double totalWorldPoints = 0;
 
     private ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
@@ -217,7 +219,8 @@ public class ArActivity extends AppCompatActivity {
 
         //Credit Card Transaction Screen with db values
         View creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
-        worldPointText = creditCardTransactionsScreen.findViewById(R.id.credit_card_transactions_world_points);
+        worldPointTextCredit = creditCardTransactionsScreen.findViewById(R.id.credit_card_transactions_world_points);
+
 
         recyclerView = creditCardTransactionsScreen.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -226,7 +229,7 @@ public class ArActivity extends AppCompatActivity {
 
         //Debit Card Transaction Screen with db values
         View debitCardTransactionsScreen = layoutInflater.inflate(R.layout.debit_card_transactions_demo, null);
-        worldPointText = debitCardTransactionsScreen.findViewById(R.id.debit_card_transactions_world_points);
+        worldPointTextDebit = debitCardTransactionsScreen.findViewById(R.id.debit_card_transactions_world_points);
 
         recyclerView = debitCardTransactionsScreen.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -235,21 +238,19 @@ public class ArActivity extends AppCompatActivity {
 
         //Prepaid Card Transaction Screen with db values
         View prepaidCardTransactionsScreen = layoutInflater.inflate(R.layout.prepaid_card_transactions_demo, null);
-        worldPointText = prepaidCardTransactionsScreen.findViewById(R.id.prepaid_card_transactions_world_points);
+        worldPointTextPrepaid = prepaidCardTransactionsScreen.findViewById(R.id.prepaid_card_transactions_world_points);
 
         recyclerView = prepaidCardTransactionsScreen.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
         recyclerView.setAdapter(recyclerAdapter);
-
-
-
+        
 
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            placeTextView(hitResult.createAnchor(), prepaidCardTransactionsScreen);
+            placeTextView(hitResult.createAnchor(), creditCardTransactionsScreen);
         });
 
 //        System.out.println(cardmodel.getCardNumber());
@@ -294,7 +295,9 @@ public class ArActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        worldPointText.setText(String.valueOf(totalWorldPoints));
+                                        worldPointTextCredit.setText(String.valueOf(totalWorldPoints));
+                                        worldPointTextDebit.setText(String.valueOf(totalWorldPoints));
+                                        worldPointTextPrepaid.setText(String.valueOf(totalWorldPoints));
                                     }
                                 });
                             }
