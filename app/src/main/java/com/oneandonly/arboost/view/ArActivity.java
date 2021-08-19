@@ -1,6 +1,7 @@
 package com.oneandonly.arboost.view;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,7 +10,11 @@ import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.ar.core.Anchor;
@@ -18,13 +23,26 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.oneandonly.arboost.R;
 import com.oneandonly.arboost.models.CardModel;
+import com.oneandonly.arboost.models.TransactionModel;
+import com.oneandonly.arboost.models.UserModel;
+import com.oneandonly.arboost.service.CardAPI;
+import com.oneandonly.arboost.service.RetrofitClient;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ArActivity extends AppCompatActivity {
 
     private ArFragment arFragment;
-
+    private CardAPI transactionAPI;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +51,6 @@ public class ArActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         CardModel cardmodel = intent.getParcelableExtra("cardModel");
-
         LayoutInflater layoutInflater = getLayoutInflater();
 
         // Credit Card Home Screen with db values
@@ -185,6 +202,18 @@ public class ArActivity extends AppCompatActivity {
         prepaidCardExpiryDateDetails.setText(String.valueOf(cardmodel.getExpireDate()));
 
 
+        transactionAPI = RetrofitClient.getInstances().getCardAPI();
+        //ArrayList<TransactionModel> transactionModelArrayList =
+        makeTransactionCall("4943141382383861");
+//        System.out.println(transactionModelArrayList.size());
+//        System.out.println("Transaction Cal!!");
+//        for(int i = 0; i < transactionModelArrayList.size();i++){
+//            System.out.println(transactionModelArrayList.get(i).getStore());
+//            System.out.println(i);
+//        }
+
+        //Prepaid Card Details Screen with db values
+        View creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
 
 
 
@@ -192,7 +221,7 @@ public class ArActivity extends AppCompatActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            placeTextView(hitResult.createAnchor(), creditCardHomeScreen);
+            placeTextView(hitResult.createAnchor(), creditCardTransactionsScreen);
         });
 
 //        System.out.println(cardmodel.getCardNumber());
@@ -206,6 +235,78 @@ public class ArActivity extends AppCompatActivity {
 //        System.out.println(cardmodel.getUser().getName());
 //        System.out.println(cardmodel.getUser().getSurname());
 
+    }
+
+    private void makeTransactionCall(String cardNumber) {
+        Call<JsonArray> call = transactionAPI.getTransaction(cardNumber);
+        ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
+        call.enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                if(response.isSuccessful()){
+                    if(response.body() != null){
+                        JsonArray body = response.body();
+                        //System.out.println(body);
+
+
+                        for(int i = 0; i< body.size();i++){
+                            JsonObject transactionObject = (JsonObject) body.get(i);
+                            double totalAmount = transactionObject.get("total_amount").getAsDouble();
+                            double worldPoint = transactionObject.get("world_point").getAsDouble();
+
+                            String store = transactionObject.get("store").getAsString().split("T")[0];
+                            String sector = transactionObject.get("sector").getAsString().split("T")[0];
+                            String date = transactionObject.get("date").getAsString().split("T")[0];
+
+                            TransactionModel transactionModel = new TransactionModel(store,sector,date,totalAmount,worldPoint);
+
+                            transactionModelArrayList.add(transactionModel);
+                            if(transactionModelArrayList.size() == body.size()){
+                                printCardTransaction(transactionModelArrayList);
+                                //System.out.println(transactionModelArrayList.size());
+                            }
+                            //System.out.println(transactionModel);
+                        }
+
+//                        Intent intent = new Intent(ArActivity.this, ArActivity.class);
+//                        intent.putExtra("transactionModelArrayList", transactionModelArrayList);
+//                        startActivity(intent);
+                    }
+                    else{
+                        System.out.println("Body NULL!!");
+                    }
+                }
+                else{
+                    System.out.println(response.code());
+                    if (response.code() == 400) {
+                        try {
+                            String errorText = response.errorBody().string();
+                            new AlertDialog.Builder(ArActivity.this)
+                                    .setTitle("Hata")
+                                    .setMessage(errorText)
+                                    .setPositiveButton("Tamam", null)
+                                    .show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                System.out.println("Error!!");
+                System.out.println(t.getMessage());
+            }
+
+        });
+    }
+
+
+    private void printCardTransaction(ArrayList<TransactionModel> transactionModelArrayList) {
+        
+        System.out.println(transactionModelArrayList.size());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

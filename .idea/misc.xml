@@ -12,14 +12,15 @@
         <entry key="app/src/main/res/drawable/selected_tab.xml" value="0.23854166666666668" />
         <entry key="app/src/main/res/drawable/selected_tabs.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/drawable/white_circle.xml" value="0.23854166666666668" />
-        <entry key="app/src/main/res/layout/activity_ar.xml" value="0.18478260869565216" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.128125" />
+        <entry key="app/src/main/res/layout/activity_ar.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/card_details.xml" value="0.335" />
         <entry key="app/src/main/res/layout/card_transactions.xml" value="0.25" />
         <entry key="app/src/main/res/layout/credit_card_debt_payments.xml" value="0.5" />
         <entry key="app/src/main/res/layout/credit_card_details.xml" value="0.335" />
         <entry key="app/src/main/res/layout/credit_card_home_screen.xml" value="0.43021294772809976" />
-        <entry key="app/src/main/res/layout/credit_card_transactions.xml" value="0.22239583333333332" />
+        <entry key="app/src/main/res/layout/credit_card_transactions.xml" value="0.3141857794750908" />
+        <entry key="app/src/main/res/layout/credit_card_transactions_demo.xml" value="0.2421875" />
         <entry key="app/src/main/res/layout/debit_card_details.xml" value="0.375" />
         <entry key="app/src/main/res/layout/debit_card_home_screen.xml" value="0.335" />
         <entry key="app/src/main/res/layout/debit_card_transactions.xml" value="0.22239583333333332" />
@@ -29,6 +30,7 @@
         <entry key="app/src/main/res/layout/prepaid_card_details.xml" value="0.335" />
         <entry key="app/src/main/res/layout/prepaid_card_home_screen.xml" value="0.335" />
         <entry key="app/src/main/res/layout/prepaid_card_transactions.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/sample_layout.xml" value="0.2421875" />
       </map>
     </option>
   </component>

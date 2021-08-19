@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView info;
     int MY_SCAN_REQUEST_CODE = 111;
     private CardAPI cardAPI;
+    private ProgressBar progressBar;
 
     //https://api.nomics.com/v1
     //7406cdd7cf094cd2e977a1cdcdfc7656a7c1d065
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         scan = findViewById(R.id.main_scan_button);
         info = findViewById(R.id.main_info_button);
         cardAPI = RetrofitClient.getInstances().getCardAPI();
+        progressBar = findViewById(R.id.main_progress_bar);
 
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeApiCall(String cardNumber, int userId) {
+        scan.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         Call<JsonObject> call = cardAPI.getCard(cardNumber, userId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -133,28 +138,41 @@ public class MainActivity extends AppCompatActivity {
                                 eAccountStatement, accountNumber, type, userModel, accountLimit,
                                 debt, balance, flexibleAccountLimit, isContactless, isEcom, mailOrder);
 
+                        scan.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Intent intent = new Intent(MainActivity.this, ArActivity.class);
                         intent.putExtra("cardModel", cardModel);
                         startActivity(intent);
                     }
                     else{
+                        scan.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         System.out.println("Body NULL!!");
                     }
                 }
                 else{
+                    scan.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                     System.out.println(response.code());
                     if (response.code() == 400) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Hata")
-                                .setMessage("Size ait olmayan bir kartın bilgilerini göremezsiniz")
-                                .setPositiveButton("OK", null)
-                                .show();
+                        try {
+                            String errorText = response.errorBody().string();
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Hata")
+                                    .setMessage(errorText)
+                                    .setPositiveButton("Tamam", null)
+                                    .show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                scan.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
                 System.out.println("Error!!");
                 System.out.println(t.getMessage());
             }

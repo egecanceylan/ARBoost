@@ -4,18 +4,38 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TransactionModel implements Parcelable {
-    private String store,sector,date,cardNumber;
+    private String store,sector,date;
     private double totalAmount, worldPoint;
 
 
-    public TransactionModel(String store, String sector, String date, String cardNumber, double totalAmount, double worldPoint) {
+    public TransactionModel(String store, String sector, String date, double totalAmount, double worldPoint) {
         this.store = store;
         this.sector = sector;
         this.date = date;
-        this.cardNumber = cardNumber;
         this.totalAmount = totalAmount;
         this.worldPoint = worldPoint;
     }
+
+    protected TransactionModel(Parcel in) {
+        store = in.readString();
+        sector = in.readString();
+        date = in.readString();
+        totalAmount = in.readDouble();
+        worldPoint = in.readDouble();
+    }
+
+    //added later. idk if it is important
+    public static final Creator<TransactionModel> CREATOR = new Creator<TransactionModel>() {
+        @Override
+        public TransactionModel createFromParcel(Parcel in) {
+            return new TransactionModel(in);
+        }
+
+        @Override
+        public TransactionModel[] newArray(int size) {
+            return new TransactionModel[size];
+        }
+    };
 
     public String getStore() {
         return store;
@@ -41,14 +61,6 @@ public class TransactionModel implements Parcelable {
         this.date = date;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -72,6 +84,10 @@ public class TransactionModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(store);
+        dest.writeString(sector);
+        dest.writeString(date);
+        dest.writeDouble(totalAmount);
+        dest.writeDouble(worldPoint);
     }
 }

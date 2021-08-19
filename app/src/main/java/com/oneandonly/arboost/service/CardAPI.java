@@ -1,5 +1,6 @@
 package com.oneandonly.arboost.service;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -20,4 +21,9 @@ public interface CardAPI {
     Call<JsonObject> getCard(@Path("card_number") String cardNumber, @Query("id") Integer id);
 
     //transaction/info/{card_number}
+
+
+    @GET("transaction/info/{card_number}")
+    Call<JsonArray> getTransaction(@Path("card_number") String cardNumber);
+
 }

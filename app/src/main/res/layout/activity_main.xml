@@ -46,10 +46,21 @@
             android:layout_below="@id/text"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:textSize="25dp"
+            android:background="@drawable/round_button"
             android:text="Scan"
             android:textAllCaps="false"
-            android:background="@drawable/round_button" />
+            android:textSize="25dp"
+            android:visibility="visible"/>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_progress_bar"
+            android:layout_below="@id/text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="invisible"
+            />
 
     </RelativeLayout>
 
