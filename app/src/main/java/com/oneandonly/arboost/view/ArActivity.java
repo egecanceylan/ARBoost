@@ -3,6 +3,8 @@ package com.oneandonly.arboost.view;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Build;
@@ -26,6 +28,7 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.oneandonly.arboost.R;
+import com.oneandonly.arboost.adapters.RecyclerAdapter;
 import com.oneandonly.arboost.models.CardModel;
 import com.oneandonly.arboost.models.TransactionModel;
 import com.oneandonly.arboost.models.UserModel;
@@ -43,6 +46,10 @@ public class ArActivity extends AppCompatActivity {
 
     private ArFragment arFragment;
     private CardAPI transactionAPI;
+    private RecyclerView recyclerView;
+    private RecyclerAdapter recyclerAdapter;
+    private ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +71,6 @@ public class ArActivity extends AppCompatActivity {
         creditCardDebt.setText(String.valueOf(cardmodel.getDebt()));
         creditCardCurrentLimit.setText(String.valueOf(cardmodel.getAccountLimit()-cardmodel.getDebt()));
         creditCardTotalLimit.setText(String.valueOf(cardmodel.getAccountLimit()));
-
-
 
         // Credit Card Debt Payments with db values
         View creditCardDebtPaymentScreen = layoutInflater.inflate(R.layout.credit_card_debt_payments, null);
@@ -214,9 +219,10 @@ public class ArActivity extends AppCompatActivity {
 
         //Prepaid Card Details Screen with db values
         View creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
-
-
-
+        recyclerView = creditCardTransactionsScreen.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
+        recyclerView.setAdapter(recyclerAdapter);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
@@ -239,7 +245,7 @@ public class ArActivity extends AppCompatActivity {
 
     private void makeTransactionCall(String cardNumber) {
         Call<JsonArray> call = transactionAPI.getTransaction(cardNumber);
-        ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
+
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -261,6 +267,7 @@ public class ArActivity extends AppCompatActivity {
                             TransactionModel transactionModel = new TransactionModel(store,sector,date,totalAmount,worldPoint);
 
                             transactionModelArrayList.add(transactionModel);
+                            recyclerAdapter.notifyDataSetChanged();
                             if(transactionModelArrayList.size() == body.size()){
                                 printCardTransaction(transactionModelArrayList);
                                 //System.out.println(transactionModelArrayList.size());
