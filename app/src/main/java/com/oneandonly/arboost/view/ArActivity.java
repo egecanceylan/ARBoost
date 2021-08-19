@@ -48,6 +48,9 @@ public class ArActivity extends AppCompatActivity {
     private CardAPI transactionAPI;
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
+    private TextView worldPointText;
+    private double totalWorldPoints = 0;
+
     private ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -209,25 +212,44 @@ public class ArActivity extends AppCompatActivity {
 
         transactionAPI = RetrofitClient.getInstances().getCardAPI();
         //ArrayList<TransactionModel> transactionModelArrayList =
-        makeTransactionCall("4943141382383861");
-//        System.out.println(transactionModelArrayList.size());
-//        System.out.println("Transaction Cal!!");
-//        for(int i = 0; i < transactionModelArrayList.size();i++){
-//            System.out.println(transactionModelArrayList.get(i).getStore());
-//            System.out.println(i);
-//        }
+        makeTransactionCall("4943141334422544");
 
-        //Prepaid Card Details Screen with db values
+
+        //Credit Card Transaction Screen with db values
         View creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
+        worldPointText = creditCardTransactionsScreen.findViewById(R.id.credit_card_transactions_world_points);
+
         recyclerView = creditCardTransactionsScreen.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
         recyclerView.setAdapter(recyclerAdapter);
 
+        //Debit Card Transaction Screen with db values
+        View debitCardTransactionsScreen = layoutInflater.inflate(R.layout.debit_card_transactions_demo, null);
+        worldPointText = debitCardTransactionsScreen.findViewById(R.id.debit_card_transactions_world_points);
+
+        recyclerView = debitCardTransactionsScreen.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
+        recyclerView.setAdapter(recyclerAdapter);
+
+        //Prepaid Card Transaction Screen with db values
+        View prepaidCardTransactionsScreen = layoutInflater.inflate(R.layout.prepaid_card_transactions_demo, null);
+        worldPointText = prepaidCardTransactionsScreen.findViewById(R.id.prepaid_card_transactions_world_points);
+
+        recyclerView = prepaidCardTransactionsScreen.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
+        recyclerView.setAdapter(recyclerAdapter);
+
+
+
+
+
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            placeTextView(hitResult.createAnchor(), creditCardTransactionsScreen);
+            placeTextView(hitResult.createAnchor(), prepaidCardTransactionsScreen);
         });
 
 //        System.out.println(cardmodel.getCardNumber());
@@ -254,7 +276,6 @@ public class ArActivity extends AppCompatActivity {
                         JsonArray body = response.body();
                         //System.out.println(body);
 
-
                         for(int i = 0; i< body.size();i++){
                             JsonObject transactionObject = (JsonObject) body.get(i);
                             double totalAmount = transactionObject.get("total_amount").getAsDouble();
@@ -264,16 +285,24 @@ public class ArActivity extends AppCompatActivity {
                             String sector = transactionObject.get("sector").getAsString().split("T")[0];
                             String date = transactionObject.get("date").getAsString().split("T")[0];
 
+                            totalWorldPoints += worldPoint;
                             TransactionModel transactionModel = new TransactionModel(store,sector,date,totalAmount,worldPoint);
 
                             transactionModelArrayList.add(transactionModel);
                             recyclerAdapter.notifyDataSetChanged();
                             if(transactionModelArrayList.size() == body.size()){
-                                printCardTransaction(transactionModelArrayList);
-                                //System.out.println(transactionModelArrayList.size());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        worldPointText.setText(String.valueOf(totalWorldPoints));
+                                    }
+                                });
                             }
-                            //System.out.println(transactionModel);
                         }
+                        System.out.println(totalWorldPoints);
+
+                        //worldPointText.setText(String.valueOf(totalWorldPoints));
+
 
 //                        Intent intent = new Intent(ArActivity.this, ArActivity.class);
 //                        intent.putExtra("transactionModelArrayList", transactionModelArrayList);
@@ -311,10 +340,9 @@ public class ArActivity extends AppCompatActivity {
     }
 
 
-    private void printCardTransaction(ArrayList<TransactionModel> transactionModelArrayList) {
-        
-        System.out.println(transactionModelArrayList.size());
-    }
+//    private void printCardTransaction(ArrayList<TransactionModel> transactionModelArrayList) {
+//        System.out.println(transactionModelArrayList.size());
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void placeTextView(Anchor anchor, View view) {

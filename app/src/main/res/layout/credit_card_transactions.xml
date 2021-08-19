@@ -62,489 +62,488 @@
 
     <LinearLayout
 
+        android:id="@+id/card_transactions_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/card_transactions_layout"
-        android:orientation="vertical"
-        android:background="@drawable/bottom_radius"
+        android:layout_below="@id/separator_line"
         android:layout_marginHorizontal="20dp"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_below="@id/separator_line">
+        android:background="@drawable/bottom_radius"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="20dp">
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/card_transactions_text_info"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kart Hareketleri"
-            android:fontFamily="@font/fira_sans_semi_bold"
-            android:textSize="15dp"
-            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"/>
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="Kart Hareketleri"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/world_puan_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/rating_512_1"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/rating_512_1" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_world_puan_text"
-                android:layout_height="wrap_content"
-                android:text="World Puan"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/world_puan_icon"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_point"
-                android:text="4000"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                />
+                android:layout_toRightOf="@id/world_puan_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="World Puan"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/card_transactions_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="4000"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bugün"
-            android:fontFamily="@font/fira_sans_semi_bold"
-            android:id="@+id/today"
-            android:textColor="@color/white"
-            android:textSize="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"/>
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="Bugün"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_2">
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/clothing_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/clothing_icon"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/clothing_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/clothing_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="Pull &amp; Bear"
-                android:fontFamily="@font/fira_sans_semi_bold"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/clothing_icon"/>
+                android:textSize="10sp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/card_transactions_today_payment_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="-129,90 TL"
-                android:fontFamily="@font/fira_sans_semi_bold"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_3">
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/coffe_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/coffee_icon"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/coffee_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_3"
-                android:layout_height="wrap_content"
-                android:text="Starbucks"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/coffe_icon"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_today_payment_2"
-                android:text="-42,55 TL"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/coffe_icon"
                 android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="Starbucks"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/card_transactions_today_payment_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="-42,55 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_4" >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/gasstation_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/gasstation"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/gasstation" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_4"
-                android:layout_height="wrap_content"
-                android:text="Opet"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/gasstation_icon"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/gasstation_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="Opet"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+            <TextView
                 android:id="@+id/card_transactions_today_payment_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="-200,00 TL"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_5"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_5" >
+            android:layout_height="match_parent">
+
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/organization_icon"
-                android:layout_height="wrap_content"
-                android:src="@drawable/organization_icon"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
-            <TextView
                 android:layout_width="wrap_content"
-                android:id="@+id/card_transactions_text_5"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/organization_icon" />
+
+            <TextView
+                android:id="@+id/card_transactions_text_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/organization_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="Yapı Kredi Maaş Öde.."
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/organization_icon"/>
+                android:textSize="10sp" />
 
             <TextView
+                android:id="@+id/card_transactions_today_payment_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_today_payment_4"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="+2763,77 TL"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/yesterday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dün"
-            android:id="@+id/yesterday"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"/>
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="Dün"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_6"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_6" >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/person_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/person"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/person" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_6"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/person_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="John Doe EFT"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/person_icon"/>
+                android:textSize="10sp" />
 
             <TextView
+                android:id="@+id/card_transactions_yesterday_payment_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_yesterday_payment_1"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="+500,00 TL"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_7"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_7" >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/phone_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/phone_icon"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/phone_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_7"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/phone_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="Vodafone"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/phone_icon" />
+                android:textSize="10sp" />
 
             <TextView
+                android:id="@+id/card_transactions_yesterday_payment_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_yesterday_payment_2"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="-99,90 TL"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_8"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_8" >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/restaurant_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/restaurant_icon"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/restaurant_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_8"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/restaurant_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="Sushico"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/restaurant_icon" />
+                android:textSize="10sp" />
 
             <TextView
+                android:id="@+id/card_transactions_yesterday_payment_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_yesterday_payment_3"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="-332,60 TL"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/early_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="28.07.2021"
-            android:fontFamily="@font/fira_sans_semi_bold"
-            android:textColor="@color/white"
-            android:textSize="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"/>
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="28.07.2021"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_9"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_9" >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/bill_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/bill_icon"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/bill_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_9"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/bill_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="IGDAŞ Doğalgaz"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/bill_icon"/>
+                android:textSize="10sp" />
 
             <TextView
+                android:id="@+id/card_transactions_early_payment_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_early_payment_1"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="-175,67 TL"
                 android:textColor="@color/white"
-                android:textSize="10dp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:textSize="10dp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_10"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_10" >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/shop_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/shop_icon"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/shop_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_10"
-                android:layout_height="wrap_content"
-                android:text="Miniso"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/shop_icon"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/shop_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="Miniso"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+            <TextView
                 android:id="@+id/card_transactions_early_payment_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="-229,85 TL"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/card_transactions_layout_11"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_transactions_layout_11" >
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/shopping_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/shopping_icon"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:src="@drawable/shopping_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/card_transactions_text_11"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/shopping_icon"
+                android:fontFamily="@font/fira_sans_semi_bold"
                 android:text="Migros"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/shopping_icon"/>
+                android:textSize="10sp" />
 
             <TextView
+                android:id="@+id/card_transactions_early_payment_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card_transactions_early_payment_3"
-                android:text="-344,76 TL"
-                android:fontFamily="@font/fira_sans_semi_bold"
-                android:textColor="@color/white"
-                android:textSize="10sp"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:fontFamily="@font/fira_sans_semi_bold"
+                android:text="-344,76 TL"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
 
         </RelativeLayout>
 

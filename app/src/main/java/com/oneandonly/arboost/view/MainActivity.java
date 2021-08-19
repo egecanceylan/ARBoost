@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeApiCall("4943141382383861", 1);
+                makeApiCall("4943141334422544", 3);
 
 //                CardModel cardModel = new CardModel("1", "1", "1", "1", "1", "1",
 //                        "1", new UserModel(1, "1", "1"), 100, 200, 300, 400, false,

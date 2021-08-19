@@ -17,36 +17,24 @@
             android:id="@+id/card_transactions"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/account_activity"
-            app:layout_constraintEnd_toStartOf="@+id/bills"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/selected_tab"
             android:padding="10dp"
-            android:background="@drawable/selected_tab" />
-
-        <ImageView
-            android:id="@+id/bills"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/bills"
+            android:src="@drawable/account_activity"
             app:layout_constraintEnd_toStartOf="@+id/card_info"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/card_transactions"
-            app:layout_constraintTop_toTopOf="parent"
-            android:padding="10dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/card_info"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:padding="10dp"
             android:src="@drawable/card_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/bills"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteY="0dp"
-            android:padding="10dp" />
+            app:layout_constraintStart_toEndOf="@+id/card_transactions"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,7 +78,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/credit_card_transactions_world_points"
+            android:id="@+id/prepaid_card_transactions_world_points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

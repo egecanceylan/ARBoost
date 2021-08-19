@@ -37,7 +37,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         TransactionModel model = models.get(position);
-        holder.textView.setText(model.getSector());
+        holder.textViewStore.setText(model.getStore());
+        holder.textViewAmount.setText(String.valueOf(model.getTotalAmount()));
     }
 
     @Override
@@ -47,12 +48,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     public class Holder extends RecyclerView.ViewHolder {
 
-        TextView textView;
+        TextView textViewStore;
+        TextView textViewAmount;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
 
-            textView = itemView.findViewById(R.id.sample_layout_textview);
+            textViewStore = itemView.findViewById(R.id.sample_layout_store);
+            textViewAmount = itemView.findViewById(R.id.sample_layout_amount);
         }
     }
 }
