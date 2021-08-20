@@ -20,7 +20,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Frame;
+import com.google.ar.core.Pose;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.ArSceneView;
+import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.Scene;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
@@ -37,6 +43,7 @@ import com.oneandonly.arboost.service.RetrofitClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,6 +59,7 @@ public class ArActivity extends AppCompatActivity {
     private TextView worldPointTextDebit;
     private TextView worldPointTextPrepaid;
     private double totalWorldPoints = 0;
+    private List<Anchor> anchorList;
 
     private ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
 
@@ -64,6 +72,8 @@ public class ArActivity extends AppCompatActivity {
         Intent intent = getIntent();
         CardModel cardmodel = intent.getParcelableExtra("cardModel");
         LayoutInflater layoutInflater = getLayoutInflater();
+
+        anchorList = new ArrayList<>();
 
         // Credit Card Home Screen with db values
         View creditCardHomeScreen = layoutInflater.inflate(R.layout.credit_card_home_screen, null);
@@ -109,35 +119,34 @@ public class ArActivity extends AppCompatActivity {
 
         if(cardmodel.isContactless() == true) {
             creditCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             creditCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
         if(cardmodel.isEcom() == true) {
             creditCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             creditCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
         if(cardmodel.isMailOrder() == true) {
             creditCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             creditCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
 
         if(cardmodel.isAutomated() == true) {
             creditCardAutomatedCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             creditCardAutomatedCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }if(cardmodel.isCurrency() == true) {
+        } if(cardmodel.isCurrency() == true) {
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }if(cardmodel.geteAccountStatement() != null) {
+        } if(cardmodel.geteAccountStatement() != null) {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
             creditCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
-        }else{
+        } else {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-
 
         //Debit Card Home Screen with db values
         View debitCardHomeScreen = layoutInflater.inflate(R.layout.debit_card_home_screen, null);
@@ -163,25 +172,24 @@ public class ArActivity extends AppCompatActivity {
 
         if(cardmodel.isContactless() == true) {
             debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
         if(cardmodel.isEcom() == true) {
             debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
         if(cardmodel.isMailOrder() == true) {
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }if(cardmodel.geteAccountStatement() != null) {
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
             debitCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
-        }else{
+        } else {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-
 
         //Prepaid Card Home Screen with db values
         View prepaidCardHomeScreen = layoutInflater.inflate(R.layout.prepaid_card_home_screen, null);
@@ -228,7 +236,6 @@ public class ArActivity extends AppCompatActivity {
         transactionAPI = RetrofitClient.getInstances().getCardAPI();
         makeTransactionCall("4943141334422544");
 
-
         //Credit Card Transaction Screen with db values
         View creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
         worldPointTextCredit = creditCardTransactionsScreen.findViewById(R.id.credit_card_transactions_world_points);
@@ -255,26 +262,21 @@ public class ArActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
         recyclerView.setAdapter(recyclerAdapter);
-        
-
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
+        arFragment.getArSceneView().getPlaneRenderer().setVisible(false);
 
-        arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            placeTextView(hitResult.createAnchor(), prepaidCardDetailsScreen);
+        arFragment.getArSceneView().getScene().addOnUpdateListener(new Scene.OnUpdateListener() {
+            @Override
+            public void onUpdate(FrameTime frameTime) {
+                Frame frame = arFragment.getArSceneView().getArFrame();
+                if (frame != null && anchorList.isEmpty()) {
+                    arFragment.getPlaneDiscoveryController().hide();
+                    arFragment.getPlaneDiscoveryController().setInstructionView(null);
+                    placeTextView(creditCardHomeScreen);
+                } else arFragment.getArSceneView().getScene().removeOnUpdateListener(this);
+            }
         });
-
-//        System.out.println(cardmodel.getCardNumber());
-//        System.out.println(cardmodel.getAccountLimit());
-//        System.out.println(cardmodel.getCutOffDate());
-//        System.out.println(cardmodel.getExpireDate());
-//        System.out.println(cardmodel.getDebt());
-//        System.out.println(cardmodel.getPaymentDueDate());
-//        System.out.println(cardmodel.geteAccountStatement());
-//        System.out.println(cardmodel.getUser().getId());
-//        System.out.println(cardmodel.getUser().getName());
-//        System.out.println(cardmodel.getUser().getSurname());
-
     }
 
     private void makeTransactionCall(String cardNumber) {
@@ -338,38 +340,49 @@ public class ArActivity extends AppCompatActivity {
                 }
 
             }
-
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 System.out.println("Error!!");
                 System.out.println(t.getMessage());
             }
-
         });
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void placeTextView(Anchor anchor, View view) {
+    private void placeTextView(View view) {
         ViewRenderable.builder()
                 .setView(this, view)
                 .build()
                 .thenAccept(viewRenderable -> {
-                    placeModel(viewRenderable, anchor);
+                    placeInstant(viewRenderable);
                 });
     }
 
-    private void placeModel(ViewRenderable viewRenderable, Anchor anchor) {
-        AnchorNode anchorNode = new AnchorNode(anchor);
-        arFragment.getArSceneView().getScene().addChild(anchorNode);
+    private void placeInstant(ViewRenderable viewRenderable) {
+        if (anchorList.isEmpty()) {
+            ArSceneView sceneView = arFragment.getArSceneView();
 
-        TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
-//        node.getScaleController().setMaxScale(0.2f);
-//        node.getScaleController().setMinScale(0.01f);
+            Vector3 cameraPos = sceneView.getScene().getCamera().getWorldPosition();
+            Vector3 cameraForward = sceneView.getScene().getCamera().getForward();
+            Vector3 position = Vector3.add(cameraPos, cameraForward.scaled(0.2f));
 
-        node.setParent(anchorNode);
-        node.setRenderable(viewRenderable);
-        node.select();
+            Pose pose = Pose.makeTranslation(position.x + 0.05f, position.y, position.z);
+            Anchor anchor = sceneView.getSession().createAnchor(pose);
 
+            anchorList.add(anchor);
+
+            AnchorNode anchorNode = new AnchorNode(anchor);
+            anchorNode.setParent(sceneView.getScene());
+
+            TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
+            node.setParent(anchorNode);
+            node.setRenderable(viewRenderable);
+            node.getScaleController().setMaxScale(0.1f);
+            node.getScaleController().setMinScale(0.04f);
+            node.getRotationController().setRotationRateDegrees(180);
+            node.setLocalRotation(Quaternion.axisAngle(new Vector3(1f, 0, 0), 270));
+            node.select();
+        }
     }
 }

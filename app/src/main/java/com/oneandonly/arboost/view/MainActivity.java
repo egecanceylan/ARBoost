@@ -38,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private CardAPI cardAPI;
     private ProgressBar progressBar;
 
-    //https://api.nomics.com/v1
-    //7406cdd7cf094cd2e977a1cdcdfc7656a7c1d065
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,26 +51,21 @@ public class MainActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeApiCall("4943141334422544", 3);
+//                makeApiCall("4943141334422544", 3);
 
-//                CardModel cardModel = new CardModel("1", "1", "1", "1", "1", "1",
-//                        "1", new UserModel(1, "1", "1"), 100, 200, 300, 400, false,
-//                        false, false);
-//                Intent intent = new Intent(MainActivity.this, ArActivity.class);
-//                intent.putExtra("cardModel", cardModel);
-//                startActivity(intent);
+                Intent scanIntent = new Intent(MainActivity.this, CardIOActivity.class);
 
-//                Intent scanIntent = new Intent(MainActivity.this, CardIOActivity.class);
-//
-//                // customize these values to suit your needs.
-//                scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true); // default: false  || True seçersek ek doğrulama ekranına gitmiyor.
-//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false  || Expiry date'i istiyorsak true yapmamız lazım
-//                scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false); // default: true
-//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
-//                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
-//
-//                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
-//                startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
+                // customize these values to suit your needs.
+                scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true); // default: false  || True seçersek ek doğrulama ekranına gitmiyor.
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false  || Expiry date'i istiyorsak true yapmamız lazım
+                scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false); // default: true
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+                scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true);
+                scanIntent.putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true);
+
+                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
+                startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
             }
         });
 
