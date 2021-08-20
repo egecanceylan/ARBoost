@@ -44,7 +44,7 @@
             android:fontFamily="@font/fira_sans_semi_bold"
             android:text="Toplam Kart Limiti"
             android:textColor="#fff"
-            android:textSize="10dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/credit_card_home_screen_total_card_limit"
@@ -64,21 +64,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/credit_card_home_screen_card_limit"
-            android:layout_marginStart="45dp"
-            android:fontFamily="@font/fira_sans_semi_bold"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="80dp"
             android:layout_toRightOf="@id/home_screen_total_card_limit_text"
+            android:fontFamily="@font/fira_sans_semi_bold"
             android:text="Güncel Borç"
             android:textColor="#fff"
-            android:textSize="10dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/credit_card_home_screen_current_debt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/home_screen_total_card_limit_text"
-            android:layout_marginStart="45dp"
+            android:layout_marginStart="85dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="30dp"
             android:layout_toRightOf="@id/credit_card_home_screen_total_card_limit"

@@ -48,6 +48,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
             case "Clothing":
                 holder.imageView.setImageResource(R.drawable.clothing_icon);
                 break;
+            case "Gas":
+                holder.imageView.setImageResource(R.drawable.gasstation);
+                break;
+            case "Company":
+                holder.imageView.setImageResource(R.drawable.organization_icon);
+                break;
+            case "Personal":
+                holder.imageView.setImageResource(R.drawable.person);
+                break;
+            case "Communication":
+                holder.imageView.setImageResource(R.drawable.phone_icon);
+                break;
+            case "Food":
+                holder.imageView.setImageResource(R.drawable.restaurant_icon);
+                break;
+            case "Bills":
+                holder.imageView.setImageResource(R.drawable.bill_icon);
+                break;
+            case "Accessories":
+                holder.imageView.setImageResource(R.drawable.shop_icon);
+                break;
+            case "Market":
+                holder.imageView.setImageResource(R.drawable.shopping_icon);
+                break;
             default:
                 holder.imageView.setImageResource(R.drawable.person);
                 break;

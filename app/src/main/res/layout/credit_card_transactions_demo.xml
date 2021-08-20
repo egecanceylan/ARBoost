@@ -66,15 +66,25 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="85dp"
         android:background="#707070"
-
         >
+        <TextView
+            android:id="@+id/card_transactions_text_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/fira_sans_semi_bold"
+            android:text="Kart Hareketleri"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
 
         <ImageView
             android:id="@+id/world_puan_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/rating_512_1" />
 
         <TextView
@@ -82,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="50dp"
             android:layout_toRightOf="@id/world_puan_icon"
             android:fontFamily="@font/fira_sans_semi_bold"
             android:text="World Puan"
@@ -94,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="50dp"
             android:layout_marginRight="40dp"
             android:fontFamily="@font/fira_sans_semi_bold"
             android:text="4000"
@@ -109,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="115dp"
+        android:layout_marginTop="157dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/bottom_radius"
         app:layout_constraintBottom_toBottomOf="parent"

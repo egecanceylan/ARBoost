@@ -6,13 +6,13 @@ import android.os.Parcelable;
 public class CardModel implements Parcelable {
     private String cardNumber, cutOffDate, paymentDueDate, expireDate, eAccountStatement, accountNumber, type;
     private UserModel user;
-    private double accountLimit, debt, balance, flexibleAccountLimit;
-    private boolean isContactless, isEcom, mailOrder;
+    private double accountLimit, currentDebt,totalDebt, balance, flexibleAccountLimit;
+    private boolean isContactless, isEcom, mailOrder, isAutomated, isCurrency;
 
     public CardModel(String cardNumber, String cutOffDate, String paymentDueDate, String expireDate, String eAccountStatement, String accountNumber,
-                     String type, UserModel user, double accountLimit, double debt,
+                     String type, UserModel user, double accountLimit, double currentDebt, double totalDebt,
                      double balance, double flexibleAccountLimit, boolean isContactless,
-                     boolean isEcom, boolean mailOrder) {
+                     boolean isEcom, boolean mailOrder, boolean isAutomated, boolean isCurrency) {
         this.cardNumber = cardNumber;
         this.cutOffDate = cutOffDate;
         this.paymentDueDate = paymentDueDate;
@@ -22,12 +22,15 @@ public class CardModel implements Parcelable {
         this.type = type;
         this.user = user;
         this.accountLimit = accountLimit;
-        this.debt = debt;
+        this.currentDebt = currentDebt;
+        this.totalDebt = totalDebt;
         this.balance = balance;
         this.flexibleAccountLimit = flexibleAccountLimit;
         this.isContactless = isContactless;
         this.isEcom = isEcom;
         this.mailOrder = mailOrder;
+        this.isAutomated = isAutomated;
+        this.isCurrency = isCurrency;
     }
 
     public String getCardNumber() {
@@ -102,12 +105,20 @@ public class CardModel implements Parcelable {
         this.accountLimit = accountLimit;
     }
 
-    public double getDebt() {
-        return debt;
+    public double getCurrentDebt() {
+        return currentDebt;
     }
 
-    public void setDebt(double debt) {
-        this.debt = debt;
+    public void setCurrentDebt(double debt) {
+        this.currentDebt = currentDebt;
+    }
+
+    public double getTotalDebt() {
+        return totalDebt;
+    }
+
+    public void setTotalDebt(double debt) {
+        this.totalDebt = totalDebt;
     }
 
     public double getBalance() {
@@ -150,6 +161,22 @@ public class CardModel implements Parcelable {
         this.mailOrder = mailOrder;
     }
 
+    public boolean isAutomated() {
+        return isAutomated;
+    }
+
+    public void setAutomated(boolean isAutomated) {
+        this.isAutomated = isAutomated;
+    }
+
+    public boolean isCurrency() {
+        return isCurrency;
+    }
+
+    public void setCurrency(boolean isCurrency) {
+        this.isCurrency = isCurrency;
+    }
+
     public static Creator<CardModel> getCREATOR() {
         return CREATOR;
     }
@@ -164,12 +191,15 @@ public class CardModel implements Parcelable {
         type = in.readString();
         user = in.readParcelable(UserModel.class.getClassLoader());
         accountLimit = in.readDouble();
-        debt = in.readDouble();
+        currentDebt = in.readDouble();
+        totalDebt = in.readDouble();
         balance = in.readDouble();
         flexibleAccountLimit = in.readDouble();
         isContactless = in.readByte() != 0;
         isEcom = in.readByte() != 0;
         mailOrder = in.readByte() != 0;
+        isAutomated = in.readByte() != 0;
+        isCurrency = in.readByte() != 0;
     }
 
     @Override
@@ -183,12 +213,15 @@ public class CardModel implements Parcelable {
         dest.writeString(type);
         dest.writeParcelable(user, flags);
         dest.writeDouble(accountLimit);
-        dest.writeDouble(debt);
+        dest.writeDouble(currentDebt);
+        dest.writeDouble(totalDebt);
         dest.writeDouble(balance);
         dest.writeDouble(flexibleAccountLimit);
         dest.writeByte((byte) (isContactless ? 1 : 0));
         dest.writeByte((byte) (isEcom ? 1 : 0));
         dest.writeByte((byte) (mailOrder ? 1 : 0));
+        dest.writeByte((byte) (isAutomated ? 1 : 0));
+        dest.writeByte((byte) (isCurrency ? 1 : 0));
     }
 
     @Override

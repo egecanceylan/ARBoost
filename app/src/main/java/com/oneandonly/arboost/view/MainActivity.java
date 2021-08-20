@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         cardNumber = sb.toString();
                         double accountLimit = body.get("account_limit").getAsDouble();
-                        double debt = body.get("debt").getAsDouble();
+                        double currentDebt = body.get("current_debt").getAsDouble();
+                        double totalDebt = body.get("total_debt").getAsDouble();
                         // cutoffDate, paymentDueDate and expireDate are formatted as 2021-08-06T17:45:52.217+00:00
                         // we need only the date not the time so we split the text by 'T' and get
                         // the first index.
@@ -133,10 +134,12 @@ public class MainActivity extends AppCompatActivity {
                         boolean isContactless = body.get("is_contactless").getAsBoolean();
                         boolean isEcom = body.get("is_ecom").getAsBoolean();
                         boolean mailOrder = body.get("mail_order").getAsBoolean();
+                        boolean isAutomated = body.get("is_automatic_payment_order").getAsBoolean();
+                        boolean isCurrency = body.get("is_currency_account_statement").getAsBoolean();
 
                         CardModel cardModel = new CardModel(cardNumber, cutoffDate, paymentDueDate, expireDate,
                                 eAccountStatement, accountNumber, type, userModel, accountLimit,
-                                debt, balance, flexibleAccountLimit, isContactless, isEcom, mailOrder);
+                                currentDebt, totalDebt, balance, flexibleAccountLimit, isContactless, isEcom, mailOrder, isAutomated, isCurrency);
 
                         scan.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);

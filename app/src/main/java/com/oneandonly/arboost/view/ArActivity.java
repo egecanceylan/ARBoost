@@ -72,21 +72,24 @@ public class ArActivity extends AppCompatActivity {
         TextView creditCardCurrentLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_card_limit);
         TextView creditCardTotalLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_total_card_limit);
 
-        //double creditCardDebt = cardmodel.getDebt();
-        creditCardDebt.setText(String.valueOf(cardmodel.getDebt()));
-        creditCardCurrentLimit.setText(String.valueOf(cardmodel.getAccountLimit()-cardmodel.getDebt()));
+        //only last two numbers after decimal has shown, like 2355.98
+        double current = cardmodel.getAccountLimit()-cardmodel.getCurrentDebt();
+        double roundedCurrent = Math.round(current*100.0)/100.0;
+
+        creditCardDebt.setText(String.valueOf(cardmodel.getCurrentDebt()));
+        creditCardCurrentLimit.setText(String.valueOf(roundedCurrent));
         creditCardTotalLimit.setText(String.valueOf(cardmodel.getAccountLimit()));
 
         // Credit Card Debt Payments with db values
         View creditCardDebtPaymentScreen = layoutInflater.inflate(R.layout.credit_card_debt_payments, null);
 
-        //TextView currentDebt = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_home_screen_current_debt);
+        TextView creditCardCurrentDebt = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_current_debt);
         TextView creditCardTotalDebt = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_total_debt);
         TextView creditCardLastPaymentDate = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_last_payment_date);
         TextView creditCardCutoffDate = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_cutoff_date);
 
-        //currentDebt.setText(String.valueOf(cardmodel.getDebt()));
-        creditCardTotalDebt.setText(String.valueOf(cardmodel.getDebt()));
+        creditCardCurrentDebt.setText(String.valueOf(cardmodel.getCurrentDebt()));
+        creditCardTotalDebt.setText(String.valueOf(cardmodel.getTotalDebt()));
         creditCardLastPaymentDate.setText(String.valueOf(cardmodel.getPaymentDueDate()));
         creditCardCutoffDate.setText(String.valueOf(cardmodel.getCutOffDate()));
 
@@ -102,6 +105,7 @@ public class ArActivity extends AppCompatActivity {
         TextView creditCardEmail = creditCardCardDetailsScreen.findViewById(R.id.credit_card_card_details_screen_email);
         TextView creditCardExpiryDate = creditCardCardDetailsScreen.findViewById(R.id.credit_card_card_details_screen_expiry_date);
 
+        creditCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
 
         if(cardmodel.isContactless() == true) {
             creditCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
@@ -118,7 +122,7 @@ public class ArActivity extends AppCompatActivity {
         }else{
             creditCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        /*
+
         if(cardmodel.isAutomated() == true) {
             creditCardAutomatedCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         }else{
@@ -127,14 +131,13 @@ public class ArActivity extends AppCompatActivity {
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         }else{
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }if(cardmodel.isAccounSum() == true) {
+        }if(cardmodel.geteAccountStatement() != null) {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+            creditCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
         }else{
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        */
-        creditCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
-        creditCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
+
 
         //Debit Card Home Screen with db values
         View debitCardHomeScreen = layoutInflater.inflate(R.layout.debit_card_home_screen, null);
@@ -156,6 +159,8 @@ public class ArActivity extends AppCompatActivity {
         TextView debitCardEmail = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_screen_email);
         TextView debitCardExpiryDate = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_expiry_date);
 
+        debitCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
+
         if(cardmodel.isContactless() == true) {
             debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         }else{
@@ -170,9 +175,12 @@ public class ArActivity extends AppCompatActivity {
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         }else{
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }if(cardmodel.geteAccountStatement() != null) {
+            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+            debitCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
+        }else{
+            creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        debitCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
-        debitCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
 
 
         //Prepaid Card Home Screen with db values
@@ -193,6 +201,8 @@ public class ArActivity extends AppCompatActivity {
         TextView prepaidCardEmail = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_screen_email);
         TextView prepaidCardExpiryDateDetails = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_expiry_date);
 
+        prepaidCardExpiryDateDetails.setText(String.valueOf(cardmodel.getExpireDate()));
+
         if(cardmodel.isContactless() == true) {
             prepaidCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         }else{
@@ -207,20 +217,21 @@ public class ArActivity extends AppCompatActivity {
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         }else{
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }if(cardmodel.geteAccountStatement() != null) {
+            prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+            prepaidCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
+        }else{
+            creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        prepaidCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
-        prepaidCardExpiryDateDetails.setText(String.valueOf(cardmodel.getExpireDate()));
 
-
+        //API call for transaction tables
         transactionAPI = RetrofitClient.getInstances().getCardAPI();
-        //ArrayList<TransactionModel> transactionModelArrayList =
         makeTransactionCall("4943141334422544");
 
 
         //Credit Card Transaction Screen with db values
         View creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
         worldPointTextCredit = creditCardTransactionsScreen.findViewById(R.id.credit_card_transactions_world_points);
-
 
         recyclerView = creditCardTransactionsScreen.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -250,7 +261,7 @@ public class ArActivity extends AppCompatActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            placeTextView(hitResult.createAnchor(), creditCardTransactionsScreen);
+            placeTextView(hitResult.createAnchor(), prepaidCardDetailsScreen);
         });
 
 //        System.out.println(cardmodel.getCardNumber());
@@ -275,8 +286,7 @@ public class ArActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     if(response.body() != null){
                         JsonArray body = response.body();
-                        //System.out.println(body);
-
+                        //Transaction information fetched
                         for(int i = 0; i< body.size();i++){
                             JsonObject transactionObject = (JsonObject) body.get(i);
                             double totalAmount = transactionObject.get("total_amount").getAsDouble();
@@ -286,11 +296,14 @@ public class ArActivity extends AppCompatActivity {
                             String sector = transactionObject.get("sector").getAsString().split("T")[0];
                             String date = transactionObject.get("date").getAsString().split("T")[0];
 
+                            //total World points calculation for each transaction
                             totalWorldPoints += worldPoint;
                             TransactionModel transactionModel = new TransactionModel(store,sector,date,totalAmount,worldPoint);
 
                             transactionModelArrayList.add(transactionModel);
                             recyclerAdapter.notifyDataSetChanged();
+
+                            //worlpointtext's text has changed via this method
                             if(transactionModelArrayList.size() == body.size()){
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -302,14 +315,7 @@ public class ArActivity extends AppCompatActivity {
                                 });
                             }
                         }
-                        System.out.println(totalWorldPoints);
 
-                        //worldPointText.setText(String.valueOf(totalWorldPoints));
-
-
-//                        Intent intent = new Intent(ArActivity.this, ArActivity.class);
-//                        intent.putExtra("transactionModelArrayList", transactionModelArrayList);
-//                        startActivity(intent);
                     }
                     else{
                         System.out.println("Body NULL!!");
@@ -342,10 +348,6 @@ public class ArActivity extends AppCompatActivity {
         });
     }
 
-
-//    private void printCardTransaction(ArrayList<TransactionModel> transactionModelArrayList) {
-//        System.out.println(transactionModelArrayList.size());
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void placeTextView(Anchor anchor, View view) {
