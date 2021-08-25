@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.oneandonly.arboost.R;
+import com.oneandonly.arboost.models.CardImage;
 import com.oneandonly.arboost.models.CardModel;
 import com.oneandonly.arboost.models.TransactionModel;
 import com.oneandonly.arboost.models.UserModel;
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // customize these values to suit your needs.
                 scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true); // default: false  || True seçersek ek doğrulama ekranına gitmiyor.
+                scanIntent.putExtra(CardIOActivity.EXTRA_CAPTURED_CARD_IMAGE, true); // default: false
+                scanIntent.putExtra(CardIOActivity.EXTRA_RETURN_CARD_IMAGE, true); // default: false
                 scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false  || Expiry date'i istiyorsak true yapmamız lazım
                 scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false); // default: true
                 scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
@@ -168,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 scan.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
-                System.out.println("Error!!");
                 System.out.println(t.getMessage());
             }
         });
@@ -177,11 +180,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Bitmap cardImage = null;
         if (requestCode == MY_SCAN_REQUEST_CODE) {
             String resultDisplayStr;
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                 CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                cardImage = CardIOActivity.getCapturedCardImage(data);
+                CardImage cardImageModel = CardImage.getInstance();
+                cardImageModel.setBitmap(cardImage);
 
                 // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
                 //resultDisplayStr = "Card Number: " + scanResult.getRedactedCardNumber() + "\n";

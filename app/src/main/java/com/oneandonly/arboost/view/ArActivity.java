@@ -1,27 +1,27 @@
 package com.oneandonly.arboost.view;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.text.Layout;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.google.ar.core.Anchor;
+import com.google.ar.core.AugmentedImage;
+import com.google.ar.core.AugmentedImageDatabase;
+import com.google.ar.core.Config;
 import com.google.ar.core.Frame;
 import com.google.ar.core.Pose;
+import com.google.ar.core.Session;
+import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.FrameTime;
@@ -35,14 +35,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.oneandonly.arboost.R;
 import com.oneandonly.arboost.adapters.RecyclerAdapter;
+import com.oneandonly.arboost.models.CardImage;
 import com.oneandonly.arboost.models.CardModel;
 import com.oneandonly.arboost.models.TransactionModel;
-import com.oneandonly.arboost.models.UserModel;
 import com.oneandonly.arboost.service.CardAPI;
 import com.oneandonly.arboost.service.RetrofitClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;
@@ -60,6 +61,7 @@ public class ArActivity extends AppCompatActivity {
     private TextView worldPointTextPrepaid;
     private double totalWorldPoints = 0;
     private List<Anchor> anchorList;
+    private boolean isAdded = false;
 
     private ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
 
@@ -83,8 +85,8 @@ public class ArActivity extends AppCompatActivity {
         TextView creditCardTotalLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_total_card_limit);
 
         //only last two numbers after decimal has shown, like 2355.98
-        double current = cardmodel.getAccountLimit()-cardmodel.getCurrentDebt();
-        double roundedCurrent = Math.round(current*100.0)/100.0;
+        double current = cardmodel.getAccountLimit() - cardmodel.getCurrentDebt();
+        double roundedCurrent = Math.round(current * 100.0) / 100.0;
 
         creditCardDebt.setText(String.valueOf(cardmodel.getCurrentDebt()));
         creditCardCurrentLimit.setText(String.valueOf(roundedCurrent));
@@ -117,31 +119,33 @@ public class ArActivity extends AppCompatActivity {
 
         creditCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
 
-        if(cardmodel.isContactless() == true) {
+        if (cardmodel.isContactless() == true) {
             creditCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if(cardmodel.isEcom() == true) {
+        if (cardmodel.isEcom() == true) {
             creditCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if(cardmodel.isMailOrder() == true) {
+        if (cardmodel.isMailOrder() == true) {
             creditCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
 
-        if(cardmodel.isAutomated() == true) {
+        if (cardmodel.isAutomated() == true) {
             creditCardAutomatedCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardAutomatedCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        } if(cardmodel.isCurrency() == true) {
+        }
+        if (cardmodel.isCurrency() == true) {
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        } if(cardmodel.geteAccountStatement() != null) {
+        }
+        if (cardmodel.geteAccountStatement() != null) {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
             creditCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
         } else {
@@ -170,21 +174,22 @@ public class ArActivity extends AppCompatActivity {
 
         debitCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
 
-        if(cardmodel.isContactless() == true) {
+        if (cardmodel.isContactless() == true) {
             debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if(cardmodel.isEcom() == true) {
+        if (cardmodel.isEcom() == true) {
             debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if(cardmodel.isMailOrder() == true) {
+        if (cardmodel.isMailOrder() == true) {
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }if(cardmodel.geteAccountStatement() != null) {
+        }
+        if (cardmodel.geteAccountStatement() != null) {
             debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
             debitCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
         } else {
@@ -211,24 +216,25 @@ public class ArActivity extends AppCompatActivity {
 
         prepaidCardExpiryDateDetails.setText(String.valueOf(cardmodel.getExpireDate()));
 
-        if(cardmodel.isContactless() == true) {
+        if (cardmodel.isContactless() == true) {
             prepaidCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             prepaidCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if(cardmodel.isEcom() == true) {
+        if (cardmodel.isEcom() == true) {
             prepaidCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             prepaidCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if(cardmodel.isMailOrder() == true) {
+        if (cardmodel.isMailOrder() == true) {
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        }else{
+        } else {
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }if(cardmodel.geteAccountStatement() != null) {
+        }
+        if (cardmodel.geteAccountStatement() != null) {
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
             prepaidCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
-        }else{
+        } else {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
 
@@ -265,18 +271,42 @@ public class ArActivity extends AppCompatActivity {
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
         arFragment.getArSceneView().getPlaneRenderer().setVisible(false);
+        arFragment.getPlaneDiscoveryController().hide();
+        arFragment.getPlaneDiscoveryController().setInstructionView(null);
 
         arFragment.getArSceneView().getScene().addOnUpdateListener(new Scene.OnUpdateListener() {
             @Override
             public void onUpdate(FrameTime frameTime) {
                 Frame frame = arFragment.getArSceneView().getArFrame();
                 if (frame != null && anchorList.isEmpty()) {
-                    arFragment.getPlaneDiscoveryController().hide();
-                    arFragment.getPlaneDiscoveryController().setInstructionView(null);
-                    placeTextView(creditCardHomeScreen);
-                } else arFragment.getArSceneView().getScene().removeOnUpdateListener(this);
+                    Collection<AugmentedImage> augmentedImages = frame.getUpdatedTrackables(AugmentedImage.class);
+                    System.out.println(augmentedImages.size());
+                    for (AugmentedImage augmentedImage : augmentedImages) {
+                        if (augmentedImage.getTrackingState() == TrackingState.TRACKING) {
+                            if (augmentedImage.getName().equals("card") && !isAdded) {
+                                Pose centerPose = augmentedImage.getCenterPose();
+                                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+                                isAdded = true;
+                            }
+                        }
+                    }
+                }
             }
         });
+    }
+
+    public boolean setupAugmentedImagesDB(Config config, Session session) {
+        AugmentedImageDatabase augmentedImageDatabase;
+        CardImage cardImageModel = CardImage.getInstance();
+        Bitmap bitmap = cardImageModel.getBitmap();
+        if (bitmap == null) {
+            return false;
+        }
+
+        augmentedImageDatabase = new AugmentedImageDatabase(session);
+        augmentedImageDatabase.addImage("card", bitmap);
+        config.setAugmentedImageDatabase(augmentedImageDatabase);
+        return true;
     }
 
     private void makeTransactionCall(String cardNumber) {
@@ -285,11 +315,11 @@ public class ArActivity extends AppCompatActivity {
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if(response.isSuccessful()){
-                    if(response.body() != null){
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
                         JsonArray body = response.body();
                         //Transaction information fetched
-                        for(int i = 0; i< body.size();i++){
+                        for (int i = 0; i < body.size(); i++) {
                             JsonObject transactionObject = (JsonObject) body.get(i);
                             double totalAmount = transactionObject.get("total_amount").getAsDouble();
                             double worldPoint = transactionObject.get("world_point").getAsDouble();
@@ -300,13 +330,13 @@ public class ArActivity extends AppCompatActivity {
 
                             //total World points calculation for each transaction
                             totalWorldPoints += worldPoint;
-                            TransactionModel transactionModel = new TransactionModel(store,sector,date,totalAmount,worldPoint);
+                            TransactionModel transactionModel = new TransactionModel(store, sector, date, totalAmount, worldPoint);
 
                             transactionModelArrayList.add(transactionModel);
                             recyclerAdapter.notifyDataSetChanged();
 
                             //worlpointtext's text has changed via this method
-                            if(transactionModelArrayList.size() == body.size()){
+                            if (transactionModelArrayList.size() == body.size()) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -318,12 +348,10 @@ public class ArActivity extends AppCompatActivity {
                             }
                         }
 
-                    }
-                    else{
+                    } else {
                         System.out.println("Body NULL!!");
                     }
-                }
-                else{
+                } else {
                     System.out.println(response.code());
                     if (response.code() == 400) {
                         try {
@@ -338,8 +366,8 @@ public class ArActivity extends AppCompatActivity {
                         }
                     }
                 }
-
             }
+
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 System.out.println("Error!!");
@@ -348,27 +376,19 @@ public class ArActivity extends AppCompatActivity {
         });
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void placeTextView(View view) {
+    private void placeTextView(View view, Anchor anchor) {
         ViewRenderable.builder()
                 .setView(this, view)
                 .build()
                 .thenAccept(viewRenderable -> {
-                    placeInstant(viewRenderable);
+                    placeInstant(viewRenderable, anchor);
                 });
     }
 
-    private void placeInstant(ViewRenderable viewRenderable) {
+    private void placeInstant(ViewRenderable viewRenderable, Anchor anchor) {
         if (anchorList.isEmpty()) {
             ArSceneView sceneView = arFragment.getArSceneView();
-
-            Vector3 cameraPos = sceneView.getScene().getCamera().getWorldPosition();
-            Vector3 cameraForward = sceneView.getScene().getCamera().getForward();
-            Vector3 position = Vector3.add(cameraPos, cameraForward.scaled(0.2f));
-
-            Pose pose = Pose.makeTranslation(position.x + 0.05f, position.y, position.z);
-            Anchor anchor = sceneView.getSession().createAnchor(pose);
 
             anchorList.add(anchor);
 
