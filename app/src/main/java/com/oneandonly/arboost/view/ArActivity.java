@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,6 +63,8 @@ public class ArActivity extends AppCompatActivity {
     private double totalWorldPoints = 0;
     private List<Anchor> anchorList;
     private boolean isAdded = false;
+    private float cardX = 0f, cardY = 0f, cardZ = 0f, time;
+    private boolean isTop = false, isBottom = false, isRight = false, isCenter = false;
 
     private ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
 
@@ -278,15 +281,49 @@ public class ArActivity extends AppCompatActivity {
             @Override
             public void onUpdate(FrameTime frameTime) {
                 Frame frame = arFragment.getArSceneView().getArFrame();
-                if (frame != null && anchorList.isEmpty()) {
+                if (frame != null && frameTime.getStartTime(TimeUnit.MILLISECONDS) > time + 2000) {
                     Collection<AugmentedImage> augmentedImages = frame.getUpdatedTrackables(AugmentedImage.class);
-                    System.out.println(augmentedImages.size());
                     for (AugmentedImage augmentedImage : augmentedImages) {
                         if (augmentedImage.getTrackingState() == TrackingState.TRACKING) {
+                            Pose centerPose = augmentedImage.getCenterPose();
+                            time = frameTime.getStartTime(TimeUnit.MILLISECONDS);
                             if (augmentedImage.getName().equals("card") && !isAdded) {
-                                Pose centerPose = augmentedImage.getCenterPose();
+                                cardX = centerPose.tx();
+                                cardY = centerPose.ty();
+                                cardZ = centerPose.tz();
                                 placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
                                 isAdded = true;
+                                System.out.println("catched");
+                            } else if (augmentedImage.getName().equals("card") && centerPose.tz() < cardZ - 0.05f && !isTop) {
+                                System.out.println("top");
+                                placeTextView(creditCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
+                                isTop = true;
+                                isBottom = false;
+                                isRight = false;
+                                isCenter = false;
+                            } else if (augmentedImage.getName().equals("card") && centerPose.tz() > cardZ + 0.05f && !isBottom) {
+                                System.out.println("bottom");
+                                placeTextView(creditCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
+                                isBottom = true;
+                                isTop = false;
+                                isRight = false;
+                                isCenter = false;
+                            } else if (augmentedImage.getName().equals("card") && centerPose.tx() > cardX + 0.05f && !isRight) {
+                                System.out.println("right");
+                                placeTextView(creditCardDebtPaymentScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+                                isRight = true;
+                                isBottom = false;
+                                isTop = false;
+                                isCenter = false;
+                            } else if (augmentedImage.getName().equals("card") && ((centerPose.tz() > cardZ - 0.025f || centerPose.tz() < cardZ + 0.025f)
+                                    && (centerPose.tx() > cardX - 0.025f || centerPose.tx() < cardX + 0.025f))
+                                    && !isCenter && (isTop || isBottom || isRight)) {
+                                System.out.println("center");
+                                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+                                isCenter = true;
+                                isTop = false;
+                                isBottom = false;
+                                isRight = false;
                             }
                         }
                     }
@@ -387,22 +424,26 @@ public class ArActivity extends AppCompatActivity {
     }
 
     private void placeInstant(ViewRenderable viewRenderable, Anchor anchor) {
-        if (anchorList.isEmpty()) {
-            ArSceneView sceneView = arFragment.getArSceneView();
+        ArSceneView sceneView = arFragment.getArSceneView();
 
-            anchorList.add(anchor);
+        if (!anchorList.isEmpty()) {
+            anchorList.get(0).detach();
+            anchorList.set(0, anchor);
+        } else anchorList.add(anchor);
 
-            AnchorNode anchorNode = new AnchorNode(anchor);
-            anchorNode.setParent(sceneView.getScene());
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setParent(sceneView.getScene());
 
-            TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
-            node.setParent(anchorNode);
-            node.setRenderable(viewRenderable);
-            node.getScaleController().setMaxScale(0.1f);
-            node.getScaleController().setMinScale(0.04f);
-            node.getRotationController().setRotationRateDegrees(180);
-            node.setLocalRotation(Quaternion.axisAngle(new Vector3(1f, 0, 0), 270));
-            node.select();
-        }
+        viewRenderable.setShadowCaster(false);
+        viewRenderable.setShadowReceiver(false);
+
+        TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
+        node.setParent(anchorNode);
+        node.setRenderable(viewRenderable);
+        node.getScaleController().setMaxScale(0.1f);
+        node.getScaleController().setMinScale(0.04f);
+        node.getRotationController().setRotationRateDegrees(180);
+        node.setLocalRotation(Quaternion.axisAngle(new Vector3(1f, 0, 0), 270));
+        node.select();
     }
 }
