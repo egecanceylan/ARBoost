@@ -65,6 +65,12 @@ public class ArActivity extends AppCompatActivity {
     private boolean isAdded = false;
     private float cardX = 0f, cardY = 0f, cardZ = 0f, time;
     private boolean isTop = false, isBottom = false, isRight = false, isCenter = false;
+    private CardModel cardModel;
+    private LayoutInflater layoutInflater;
+    private View creditCardHomeScreen, creditCardCardDetailsScreen,
+            creditCardTransactionsScreen, creditCardDebtPaymentScreen, prepaidCardHomeScreen, prepaidCardDetailsScreen,
+            prepaidCardTransactionsScreen, debitCardHomeScreen, debitCardCardDetailsScreen, debitCardTransactionsScreen;
+    private Anchor anchor = null;
 
     private ArrayList<TransactionModel> transactionModelArrayList = new ArrayList<>();
 
@@ -75,41 +81,141 @@ public class ArActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ar);
 
         Intent intent = getIntent();
-        CardModel cardmodel = intent.getParcelableExtra("cardModel");
-        LayoutInflater layoutInflater = getLayoutInflater();
+        cardModel = intent.getParcelableExtra("cardModel");
+        layoutInflater = getLayoutInflater();
+
+        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
+        arFragment.getArSceneView().getPlaneRenderer().setVisible(false);
+        arFragment.getPlaneDiscoveryController().hide();
+        arFragment.getPlaneDiscoveryController().setInstructionView(null);
+
+        if (cardModel.getType().equals("C")) {
+            prepareCreditCardScreens();
+        } else if (cardModel.getType().equals("D")) {
+            prepareDebitCardScreens();
+        } else if (cardModel.getType().equals("P")) {
+            preparePrepaidCardScreens();
+        }
 
         anchorList = new ArrayList<>();
 
+        //API call for transaction tables
+        transactionAPI = RetrofitClient.getInstances().getCardAPI();
+        makeTransactionCall(cardModel.getCardNumber().trim().replace(" ", ""));
+
+        arFragment.getArSceneView().getScene().addOnUpdateListener(new Scene.OnUpdateListener() {
+            @Override
+            public void onUpdate(FrameTime frameTime) {
+                Frame frame = arFragment.getArSceneView().getArFrame();
+                if (frame != null && frameTime.getStartTime(TimeUnit.MILLISECONDS) > time + 2000) {
+                    Collection<AugmentedImage> augmentedImages = frame.getUpdatedTrackables(AugmentedImage.class);
+//                    System.out.println(augmentedImages.size());
+                    for (AugmentedImage augmentedImage : augmentedImages) {
+                        if (augmentedImage.getTrackingState() == TrackingState.TRACKING) {
+                            Pose centerPose = augmentedImage.getCenterPose();
+                            time = frameTime.getStartTime(TimeUnit.MILLISECONDS);
+                            renderCardScreens(augmentedImage, centerPose, cardModel.getType());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void renderCardScreens(AugmentedImage augmentedImage, Pose centerPose, String type) {
+        if (augmentedImage.getName().equals("card") && !isAdded) {
+            cardX = centerPose.tx();
+            cardY = centerPose.ty();
+            cardZ = centerPose.tz();
+            if (type.equals("C"))
+                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+            else if (type.equals("D"))
+                placeTextView(debitCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+            else if (type.equals("P"))
+                placeTextView(prepaidCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+            isAdded = true;
+            isCenter = true;
+        } else if (augmentedImage.getName().equals("card") && centerPose.tz() < cardZ - 0.05f && !isTop) {
+            if (type.equals("C"))
+                placeTextView(creditCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
+            if (type.equals("D"))
+                placeTextView(debitCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
+            if (type.equals("P"))
+                placeTextView(prepaidCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
+            isTop = true;
+            isBottom = false;
+            isRight = false;
+            isCenter = false;
+            System.out.println("top");
+        } else if (augmentedImage.getName().equals("card") && centerPose.tz() > cardZ + 0.05f && !isBottom) {
+            if (type.equals("C"))
+                placeTextView(creditCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
+            if (type.equals("D"))
+                placeTextView(debitCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
+            if (type.equals("P"))
+                placeTextView(prepaidCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
+            isBottom = true;
+            isTop = false;
+            isRight = false;
+            isCenter = false;
+            System.out.println("bottom");
+        } else if (augmentedImage.getName().equals("card") && centerPose.tx() > cardX + 0.05f && !isRight && type.equals("C")) {
+            System.out.println("right");
+            placeTextView(creditCardDebtPaymentScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+            isRight = true;
+            isBottom = false;
+            isTop = false;
+            isCenter = false;
+            System.out.println("right");
+        } else if (augmentedImage.getName().equals("card") && ((centerPose.tz() > cardZ - 0.05f && centerPose.tz() < cardZ + 0.05f)
+                && (centerPose.tx() > cardX - 0.05f && centerPose.tx() < cardX + 0.05f))
+                && !isCenter && (isTop || isBottom || isRight)) {
+            if (type.equals("C"))
+                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+            if (type.equals("D"))
+                placeTextView(debitCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+            if (type.equals("P"))
+                placeTextView(prepaidCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
+            isCenter = true;
+            isTop = false;
+            isBottom = false;
+            isRight = false;
+            System.out.println("center");
+        }
+    }
+
+    private void prepareCreditCardScreens() {
         // Credit Card Home Screen with db values
-        View creditCardHomeScreen = layoutInflater.inflate(R.layout.credit_card_home_screen, null);
+        creditCardHomeScreen = layoutInflater.inflate(R.layout.credit_card_home_screen, null);
 
         TextView creditCardDebt = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_current_debt);
         TextView creditCardCurrentLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_card_limit);
         TextView creditCardTotalLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_total_card_limit);
 
         //only last two numbers after decimal has shown, like 2355.98
-        double current = cardmodel.getAccountLimit() - cardmodel.getCurrentDebt();
+        double current = cardModel.getAccountLimit() - cardModel.getCurrentDebt();
         double roundedCurrent = Math.round(current * 100.0) / 100.0;
 
-        creditCardDebt.setText(String.valueOf(cardmodel.getCurrentDebt()));
+        creditCardDebt.setText(String.valueOf(cardModel.getCurrentDebt()));
         creditCardCurrentLimit.setText(String.valueOf(roundedCurrent));
-        creditCardTotalLimit.setText(String.valueOf(cardmodel.getAccountLimit()));
+        creditCardTotalLimit.setText(String.valueOf(cardModel.getAccountLimit()));
 
         // Credit Card Debt Payments with db values
-        View creditCardDebtPaymentScreen = layoutInflater.inflate(R.layout.credit_card_debt_payments, null);
+        creditCardDebtPaymentScreen = layoutInflater.inflate(R.layout.credit_card_debt_payments, null);
 
         TextView creditCardCurrentDebt = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_current_debt);
         TextView creditCardTotalDebt = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_total_debt);
         TextView creditCardLastPaymentDate = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_last_payment_date);
         TextView creditCardCutoffDate = creditCardDebtPaymentScreen.findViewById(R.id.credit_card_debt_payments_screen_cutoff_date);
 
-        creditCardCurrentDebt.setText(String.valueOf(cardmodel.getCurrentDebt()));
-        creditCardTotalDebt.setText(String.valueOf(cardmodel.getTotalDebt()));
-        creditCardLastPaymentDate.setText(String.valueOf(cardmodel.getPaymentDueDate()));
-        creditCardCutoffDate.setText(String.valueOf(cardmodel.getCutOffDate()));
+        creditCardCurrentDebt.setText(String.valueOf(cardModel.getCurrentDebt()));
+        creditCardTotalDebt.setText(String.valueOf(cardModel.getTotalDebt()));
+        creditCardLastPaymentDate.setText(String.valueOf(cardModel.getPaymentDueDate()));
+        creditCardCutoffDate.setText(String.valueOf(cardModel.getCutOffDate()));
 
         //Credit Card Card Details with db values
-        View creditCardCardDetailsScreen = layoutInflater.inflate(R.layout.credit_card_details, null);
+        creditCardCardDetailsScreen = layoutInflater.inflate(R.layout.credit_card_details, null);
 
         View creditCardContactlessCircle = creditCardCardDetailsScreen.findViewById(R.id.credit_card_contactless_circle);
         View creditCardEcomCircle = creditCardCardDetailsScreen.findViewById(R.id.credit_card_ecom_circle);
@@ -120,96 +226,63 @@ public class ArActivity extends AppCompatActivity {
         TextView creditCardEmail = creditCardCardDetailsScreen.findViewById(R.id.credit_card_card_details_screen_email);
         TextView creditCardExpiryDate = creditCardCardDetailsScreen.findViewById(R.id.credit_card_card_details_screen_expiry_date);
 
-        creditCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
+        creditCardExpiryDate.setText(String.valueOf(cardModel.getExpireDate()));
 
-        if (cardmodel.isContactless() == true) {
+        if (cardModel.isContactless() == true) {
             creditCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if (cardmodel.isEcom() == true) {
+        if (cardModel.isEcom() == true) {
             creditCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if (cardmodel.isMailOrder() == true) {
+        if (cardModel.isMailOrder() == true) {
             creditCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
 
-        if (cardmodel.isAutomated() == true) {
+        if (cardModel.isAutomated() == true) {
             creditCardAutomatedCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardAutomatedCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if (cardmodel.isCurrency() == true) {
+        if (cardModel.isCurrency() == true) {
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             creditCardCurrencyCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if (cardmodel.geteAccountStatement() != null) {
+        if (cardModel.geteAccountStatement() != null) {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-            creditCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
+            creditCardEmail.setText(String.valueOf(cardModel.geteAccountStatement()));
         } else {
             creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
 
-        //Debit Card Home Screen with db values
-        View debitCardHomeScreen = layoutInflater.inflate(R.layout.debit_card_home_screen, null);
+        //Credit Card Transaction Screen with db values
+        creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
+        worldPointTextCredit = creditCardTransactionsScreen.findViewById(R.id.credit_card_transactions_world_points);
 
-        TextView debitCardBalance = debitCardHomeScreen.findViewById(R.id.debit_card_home_screen_balance);
-        TextView debitCardAccountNumber = debitCardHomeScreen.findViewById(R.id.debit_card_home_screen_account_number);
-        TextView debitCardFlexibleAccountLimit = debitCardHomeScreen.findViewById(R.id.debit_card_home_screen_flexible_account_limit);
+        recyclerView = creditCardTransactionsScreen.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
+        recyclerView.setAdapter(recyclerAdapter);
+    }
 
-        debitCardBalance.setText(String.valueOf(cardmodel.getBalance()));
-        debitCardAccountNumber.setText(String.valueOf(cardmodel.getAccountNumber()));
-        debitCardFlexibleAccountLimit.setText(String.valueOf(cardmodel.getFlexibleAccountLimit()));
-
-        //Debit Card Card Details with db values
-        View debitCardCardDetailsScreen = layoutInflater.inflate(R.layout.debit_card_details, null);
-
-        View debitCardContactlessCircle = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_contactless_circle);
-        View debitCardEcomCircle = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_ecom_circle);
-        View debitCardMailOrderCircle = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_account_sum_circle);
-        TextView debitCardEmail = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_screen_email);
-        TextView debitCardExpiryDate = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_expiry_date);
-
-        debitCardExpiryDate.setText(String.valueOf(cardmodel.getExpireDate()));
-
-        if (cardmodel.isContactless() == true) {
-            debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        } else {
-            debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }
-        if (cardmodel.isEcom() == true) {
-            debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        } else {
-            debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }
-        if (cardmodel.isMailOrder() == true) {
-            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-        } else {
-            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }
-        if (cardmodel.geteAccountStatement() != null) {
-            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-            debitCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
-        } else {
-            creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
-        }
-
+    private void preparePrepaidCardScreens() {
         //Prepaid Card Home Screen with db values
-        View prepaidCardHomeScreen = layoutInflater.inflate(R.layout.prepaid_card_home_screen, null);
+        prepaidCardHomeScreen = layoutInflater.inflate(R.layout.prepaid_card_home_screen, null);
 
         TextView prepaidCardBalance = prepaidCardHomeScreen.findViewById(R.id.prepaid_card_home_screen_balance);
         TextView prepaidCardExpiryDateHome = prepaidCardHomeScreen.findViewById(R.id.prepaid_card_home_screen_expiry_date);
 
-        prepaidCardBalance.setText(String.valueOf(cardmodel.getBalance()));
-        prepaidCardExpiryDateHome.setText(String.valueOf(cardmodel.getExpireDate()));
+        prepaidCardBalance.setText(String.valueOf(cardModel.getBalance()));
+        prepaidCardExpiryDateHome.setText(String.valueOf(cardModel.getExpireDate()));
 
         //Prepaid Card Details Screen with db values
-        View prepaidCardDetailsScreen = layoutInflater.inflate(R.layout.prepaid_card_details, null);
+        prepaidCardDetailsScreen = layoutInflater.inflate(R.layout.prepaid_card_details, null);
 
         View prepaidCardContactlessCircle = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_contactless_circle);
         View prepaidCardEcomCircle = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_ecom_circle);
@@ -217,119 +290,95 @@ public class ArActivity extends AppCompatActivity {
         TextView prepaidCardEmail = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_screen_email);
         TextView prepaidCardExpiryDateDetails = prepaidCardDetailsScreen.findViewById(R.id.prepaid_card_card_details_expiry_date);
 
-        prepaidCardExpiryDateDetails.setText(String.valueOf(cardmodel.getExpireDate()));
+        //prepaid_card_card_details_account_sum_circle
 
-        if (cardmodel.isContactless() == true) {
+        prepaidCardExpiryDateDetails.setText(String.valueOf(cardModel.getExpireDate()));
+
+        if (cardModel.isContactless() == true) {
             prepaidCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             prepaidCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if (cardmodel.isEcom() == true) {
+        if (cardModel.isEcom() == true) {
             prepaidCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             prepaidCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if (cardmodel.isMailOrder() == true) {
+        if (cardModel.isMailOrder() == true) {
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
         } else {
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
-        if (cardmodel.geteAccountStatement() != null) {
+        if (cardModel.geteAccountStatement() != null) {
             prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
-            prepaidCardEmail.setText(String.valueOf(cardmodel.geteAccountStatement()));
+            prepaidCardEmail.setText(String.valueOf(cardModel.geteAccountStatement()));
         } else {
-            creditCardAccountSumCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+            prepaidCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
         }
 
-        //API call for transaction tables
-        transactionAPI = RetrofitClient.getInstances().getCardAPI();
-        makeTransactionCall("4943141334422544");
-
-        //Credit Card Transaction Screen with db values
-        View creditCardTransactionsScreen = layoutInflater.inflate(R.layout.credit_card_transactions_demo, null);
-        worldPointTextCredit = creditCardTransactionsScreen.findViewById(R.id.credit_card_transactions_world_points);
-
-        recyclerView = creditCardTransactionsScreen.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
-        recyclerView.setAdapter(recyclerAdapter);
-
-        //Debit Card Transaction Screen with db values
-        View debitCardTransactionsScreen = layoutInflater.inflate(R.layout.debit_card_transactions_demo, null);
-        worldPointTextDebit = debitCardTransactionsScreen.findViewById(R.id.debit_card_transactions_world_points);
-
-        recyclerView = debitCardTransactionsScreen.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
-        recyclerView.setAdapter(recyclerAdapter);
-
         //Prepaid Card Transaction Screen with db values
-        View prepaidCardTransactionsScreen = layoutInflater.inflate(R.layout.prepaid_card_transactions_demo, null);
+        prepaidCardTransactionsScreen = layoutInflater.inflate(R.layout.prepaid_card_transactions_demo, null);
         worldPointTextPrepaid = prepaidCardTransactionsScreen.findViewById(R.id.prepaid_card_transactions_world_points);
 
         recyclerView = prepaidCardTransactionsScreen.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
         recyclerView.setAdapter(recyclerAdapter);
+    }
 
-        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
-        arFragment.getArSceneView().getPlaneRenderer().setVisible(false);
-        arFragment.getPlaneDiscoveryController().hide();
-        arFragment.getPlaneDiscoveryController().setInstructionView(null);
+    private void prepareDebitCardScreens() {
+        //Debit Card Home Screen with db values
+        debitCardHomeScreen = layoutInflater.inflate(R.layout.debit_card_home_screen, null);
 
-        arFragment.getArSceneView().getScene().addOnUpdateListener(new Scene.OnUpdateListener() {
-            @Override
-            public void onUpdate(FrameTime frameTime) {
-                Frame frame = arFragment.getArSceneView().getArFrame();
-                if (frame != null && frameTime.getStartTime(TimeUnit.MILLISECONDS) > time + 2000) {
-                    Collection<AugmentedImage> augmentedImages = frame.getUpdatedTrackables(AugmentedImage.class);
-                    for (AugmentedImage augmentedImage : augmentedImages) {
-                        if (augmentedImage.getTrackingState() == TrackingState.TRACKING) {
-                            Pose centerPose = augmentedImage.getCenterPose();
-                            time = frameTime.getStartTime(TimeUnit.MILLISECONDS);
-                            if (augmentedImage.getName().equals("card") && !isAdded) {
-                                cardX = centerPose.tx();
-                                cardY = centerPose.ty();
-                                cardZ = centerPose.tz();
-                                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
-                                isAdded = true;
-                                System.out.println("catched");
-                            } else if (augmentedImage.getName().equals("card") && centerPose.tz() < cardZ - 0.05f && !isTop) {
-                                System.out.println("top");
-                                placeTextView(creditCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
-                                isTop = true;
-                                isBottom = false;
-                                isRight = false;
-                                isCenter = false;
-                            } else if (augmentedImage.getName().equals("card") && centerPose.tz() > cardZ + 0.05f && !isBottom) {
-                                System.out.println("bottom");
-                                placeTextView(creditCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
-                                isBottom = true;
-                                isTop = false;
-                                isRight = false;
-                                isCenter = false;
-                            } else if (augmentedImage.getName().equals("card") && centerPose.tx() > cardX + 0.05f && !isRight) {
-                                System.out.println("right");
-                                placeTextView(creditCardDebtPaymentScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
-                                isRight = true;
-                                isBottom = false;
-                                isTop = false;
-                                isCenter = false;
-                            } else if (augmentedImage.getName().equals("card") && ((centerPose.tz() > cardZ - 0.025f || centerPose.tz() < cardZ + 0.025f)
-                                    && (centerPose.tx() > cardX - 0.025f || centerPose.tx() < cardX + 0.025f))
-                                    && !isCenter && (isTop || isBottom || isRight)) {
-                                System.out.println("center");
-                                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
-                                isCenter = true;
-                                isTop = false;
-                                isBottom = false;
-                                isRight = false;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        TextView debitCardBalance = debitCardHomeScreen.findViewById(R.id.debit_card_home_screen_balance);
+        TextView debitCardAccountNumber = debitCardHomeScreen.findViewById(R.id.debit_card_home_screen_account_number);
+        TextView debitCardFlexibleAccountLimit = debitCardHomeScreen.findViewById(R.id.debit_card_home_screen_flexible_account_limit);
+
+        debitCardBalance.setText(String.valueOf(cardModel.getBalance()));
+        debitCardAccountNumber.setText(String.valueOf(cardModel.getAccountNumber()));
+        debitCardFlexibleAccountLimit.setText(String.valueOf(cardModel.getFlexibleAccountLimit()));
+
+        //Debit Card Card Details with db values
+        debitCardCardDetailsScreen = layoutInflater.inflate(R.layout.debit_card_details, null);
+
+        View debitCardContactlessCircle = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_contactless_circle);
+        View debitCardEcomCircle = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_ecom_circle);
+        View debitCardMailOrderCircle = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_account_sum_circle);
+        TextView debitCardEmail = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_screen_email);
+        TextView debitCardExpiryDate = debitCardCardDetailsScreen.findViewById(R.id.debit_card_card_details_expiry_date);
+
+        debitCardExpiryDate.setText(String.valueOf(cardModel.getExpireDate()));
+
+        if (cardModel.isContactless() == true) {
+            debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+        } else {
+            debitCardContactlessCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }
+        if (cardModel.isEcom() == true) {
+            debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+        } else {
+            debitCardEcomCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }
+        if (cardModel.isMailOrder() == true) {
+            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+        } else {
+            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }
+        if (cardModel.geteAccountStatement() != null) {
+            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.green_circle));
+            debitCardEmail.setText(String.valueOf(cardModel.geteAccountStatement()));
+        } else {
+            debitCardMailOrderCircle.setBackground(getResources().getDrawable(R.drawable.white_circle));
+        }
+
+        //Debit Card Transaction Screen with db values
+        debitCardTransactionsScreen = layoutInflater.inflate(R.layout.debit_card_transactions_demo, null);
+        worldPointTextDebit = debitCardTransactionsScreen.findViewById(R.id.debit_card_transactions_world_points);
+
+        recyclerView = debitCardTransactionsScreen.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAdapter = new RecyclerAdapter(transactionModelArrayList, this);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     public boolean setupAugmentedImagesDB(Config config, Session session) {
@@ -341,7 +390,7 @@ public class ArActivity extends AppCompatActivity {
         }
 
         augmentedImageDatabase = new AugmentedImageDatabase(session);
-        augmentedImageDatabase.addImage("card", bitmap);
+        augmentedImageDatabase.addImage("card", bitmap, 0.085f);
         config.setAugmentedImageDatabase(augmentedImageDatabase);
         return true;
     }
@@ -377,14 +426,16 @@ public class ArActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (cardModel.getType().equals("C"))
                                         worldPointTextCredit.setText(String.valueOf(totalWorldPoints));
+                                        else if (cardModel.getType().equals("D"))
                                         worldPointTextDebit.setText(String.valueOf(totalWorldPoints));
+                                        else if (cardModel.getType().equals("P"))
                                         worldPointTextPrepaid.setText(String.valueOf(totalWorldPoints));
                                     }
                                 });
                             }
                         }
-
                     } else {
                         System.out.println("Body NULL!!");
                     }
@@ -426,10 +477,10 @@ public class ArActivity extends AppCompatActivity {
     private void placeInstant(ViewRenderable viewRenderable, Anchor anchor) {
         ArSceneView sceneView = arFragment.getArSceneView();
 
-        if (!anchorList.isEmpty()) {
-            anchorList.get(0).detach();
-            anchorList.set(0, anchor);
-        } else anchorList.add(anchor);
+        if (this.anchor != null)
+            this.anchor.detach();
+
+        this.anchor = anchor;
 
         AnchorNode anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(sceneView.getScene());
