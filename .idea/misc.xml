@@ -10,6 +10,10 @@
       <map>
         <entry key="..\:/Users/egeca/Desktop/ARBoost/app/src/main/res/layout/activity_ar.xml" value="0.240625" />
         <entry key="..\:/Users/egeca/Desktop/ARBoost/app/src/main/res/layout/activity_main.xml" value="0.240625" />
+        <entry key="..\:/Users/egeca/Desktop/ARBoost/app/src/main/res/layout/credit_card_home_screen.xml" value="0.25076923076923074" />
+        <entry key="..\:/Users/egeca/Desktop/ARBoost/app/src/main/res/layout/instruction_1.xml" value="0.25076923076923074" />
+        <entry key="..\:/Users/egeca/Desktop/ARBoost/app/src/main/res/layout/instruction_2.xml" value="0.25076923076923074" />
+        <entry key="..\:/Users/egeca/Desktop/ARBoost/app/src/main/res/layout/instruction_3.xml" value="0.25076923076923074" />
         <entry key="..\:/Users/egeca/Desktop/ARBoost/app/src/main/res/layout/prepaid_card_details.xml" value="0.4" />
         <entry key="app/src/main/res/drawable/bottom_radius.xml" value="0.25833333333333336" />
         <entry key="app/src/main/res/drawable/green_circle.xml" value="0.23854166666666668" />

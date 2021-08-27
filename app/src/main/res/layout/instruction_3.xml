@@ -5,23 +5,23 @@
     android:layout_height="wrap_content"
     android:background="@drawable/round_border">
 
+    <ImageView
+        android:id="@+id/up_arrow"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/uparrow"
+        android:layout_centerHorizontal="true"/>
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Borç detaylarını görmek için kartı sağa kaydırın"
+        android:text="Kart detaylarını görmek için kartı yukarı kaydırın"
         android:textAlignment="center"
         android:textColor="#fff"
+        android:layout_below="@id/up_arrow"
         android:textStyle="bold"
         android:padding="10dp"/>
-
-    <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/rightarrow"
-        android:layout_below="@id/text"
-        android:layout_marginStart="85dp"
-        android:layout_centerHorizontal="true"/>
 
 
 
