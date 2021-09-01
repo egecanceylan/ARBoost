@@ -42,6 +42,7 @@ import com.oneandonly.arboost.service.CardAPI;
 import com.oneandonly.arboost.service.RetrofitClient;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,7 +62,6 @@ public class ArActivity extends AppCompatActivity {
     private TextView worldPointTextDebit;
     private TextView worldPointTextPrepaid;
     private double totalWorldPoints = 0;
-    private List<Anchor> instructionAnchors;
     private boolean isAdded = false;
     private float cardX = 0f, cardY = 0f, cardZ = 0f, time;
     private boolean isTop = false, isBottom = false, isRight = false, isCenter = false;
@@ -69,8 +69,7 @@ public class ArActivity extends AppCompatActivity {
     private LayoutInflater layoutInflater;
     private View creditCardHomeScreen, creditCardCardDetailsScreen,
             creditCardTransactionsScreen, creditCardDebtPaymentScreen, prepaidCardHomeScreen, prepaidCardDetailsScreen,
-            prepaidCardTransactionsScreen, debitCardHomeScreen, debitCardCardDetailsScreen, debitCardTransactionsScreen, instruction1,
-            instruction2, instruction3;
+            prepaidCardTransactionsScreen, debitCardHomeScreen, debitCardCardDetailsScreen, debitCardTransactionsScreen;
     private Anchor anchor = null;
     private AnchorNode anchorNode = null;
     private TransformableNode node = null;
@@ -100,9 +99,7 @@ public class ArActivity extends AppCompatActivity {
             preparePrepaidCardScreens();
         }
 
-        instructionAnchors = new ArrayList<>();
-
-        //API call for transaction tables
+        // API call for transaction tables
         transactionAPI = RetrofitClient.getInstances().getCardAPI();
         makeTransactionCall(cardModel.getCardNumber().trim().replace(" ", ""));
 
@@ -110,7 +107,7 @@ public class ArActivity extends AppCompatActivity {
             @Override
             public void onUpdate(FrameTime frameTime) {
                 Frame frame = arFragment.getArSceneView().getArFrame();
-                if (frame != null) {
+                if (frame != null && time < frameTime.getStartTime(TimeUnit.MILLISECONDS) - 1000) {
                     Collection<AugmentedImage> augmentedImages = frame.getUpdatedTrackables(AugmentedImage.class);
 //                    System.out.println(augmentedImages.size());
                     for (AugmentedImage augmentedImage : augmentedImages) {
@@ -131,44 +128,40 @@ public class ArActivity extends AppCompatActivity {
             cardX = centerPose.tx();
             cardY = centerPose.ty();
             cardZ = centerPose.tz();
-            if (type.equals("C")) {
-                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())), false);
-                placeTextView(instruction1, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.2f, centerPose.ty() - 0.05f, centerPose.tz())), true);
-                placeTextView(instruction2, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.2f, centerPose.tz())), true);
-                placeTextView(instruction3, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() + 0.1f, centerPose.tz())), true);
-            }
+            if (type.equals("C"))
+                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
             else if (type.equals("D"))
-                placeTextView(debitCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())), false);
+                placeTextView(debitCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
             else if (type.equals("P"))
-                placeTextView(prepaidCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())), false);
+                placeTextView(prepaidCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
             isAdded = true;
             isCenter = true;
         } else if (augmentedImage.getName().equals("card") && centerPose.tz() < cardZ - 0.05f && !isTop) {
             if (type.equals("C")) {
-                placeTextView(creditCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())), false);
+                placeTextView(creditCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
             }
             else if (type.equals("D"))
-                placeTextView(debitCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())), false);
+                placeTextView(debitCardCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
             else if (type.equals("P"))
-                placeTextView(prepaidCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())), false);
+                placeTextView(prepaidCardDetailsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.05f, centerPose.tz())));
             isTop = true;
             isBottom = false;
             isRight = false;
             isCenter = false;
         } else if (augmentedImage.getName().equals("card") && centerPose.tz() > cardZ + 0.05f && !isBottom) {
             if (type.equals("C"))
-                placeTextView(creditCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())), false);
+                placeTextView(creditCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
             else if (type.equals("D"))
-                placeTextView(debitCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())), false);
+                placeTextView(debitCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
             else if (type.equals("P"))
-                placeTextView(prepaidCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())), false);
+                placeTextView(prepaidCardTransactionsScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty() - 0.15f, centerPose.tz())));
             isBottom = true;
             isTop = false;
             isRight = false;
             isCenter = false;
         } else if (augmentedImage.getName().equals("card") && centerPose.tx() > cardX + 0.05f && !isRight && type.equals("C")) {
             System.out.println("right");
-            placeTextView(creditCardDebtPaymentScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())), false);
+            placeTextView(creditCardDebtPaymentScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
             isRight = true;
             isBottom = false;
             isTop = false;
@@ -177,11 +170,11 @@ public class ArActivity extends AppCompatActivity {
                 && (centerPose.tx() > cardX - 0.05f && centerPose.tx() < cardX + 0.05f))
                 && !isCenter && (isTop || isBottom || isRight)) {
             if (type.equals("C"))
-                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())), false);
+                placeTextView(creditCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
             else if (type.equals("D"))
-                placeTextView(debitCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())), false);
+                placeTextView(debitCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
             else if (type.equals("P"))
-                placeTextView(prepaidCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())), false);
+                placeTextView(prepaidCardHomeScreen, augmentedImage.createAnchor(Pose.makeTranslation(centerPose.tx() + 0.1f, centerPose.ty(), centerPose.tz())));
             isCenter = true;
             isTop = false;
             isBottom = false;
@@ -196,10 +189,6 @@ public class ArActivity extends AppCompatActivity {
         TextView creditCardDebt = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_current_debt);
         TextView creditCardCurrentLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_card_limit);
         TextView creditCardTotalLimit = creditCardHomeScreen.findViewById(R.id.credit_card_home_screen_total_card_limit);
-
-        instruction1 = layoutInflater.inflate(R.layout.instruction_1, null);
-        instruction2 = layoutInflater.inflate(R.layout.instruction_2, null);
-        instruction3 = layoutInflater.inflate(R.layout.instruction_3, null);
 
         //only last two numbers after decimal has shown, like 2355.98
         double current = cardModel.getAccountLimit() - cardModel.getCurrentDebt();
@@ -289,9 +278,6 @@ public class ArActivity extends AppCompatActivity {
         prepaidCardBalance.setText(String.valueOf(cardModel.getBalance()));
         prepaidCardExpiryDateHome.setText(String.valueOf(cardModel.getExpireDate()));
 
-        instruction1 = layoutInflater.inflate(R.layout.instruction_1, null);
-        instruction3 = layoutInflater.inflate(R.layout.instruction_3, null);
-
         //Prepaid Card Details Screen with db values
         prepaidCardDetailsScreen = layoutInflater.inflate(R.layout.prepaid_card_details, null);
 
@@ -348,9 +334,6 @@ public class ArActivity extends AppCompatActivity {
         debitCardBalance.setText(String.valueOf(cardModel.getBalance()));
         debitCardAccountNumber.setText(String.valueOf(cardModel.getAccountNumber()));
         debitCardFlexibleAccountLimit.setText(String.valueOf(cardModel.getFlexibleAccountLimit()));
-
-        instruction1 = layoutInflater.inflate(R.layout.instruction_1, null);
-        instruction3 = layoutInflater.inflate(R.layout.instruction_3, null);
 
         //Debit Card Card Details with db values
         debitCardCardDetailsScreen = layoutInflater.inflate(R.layout.debit_card_details, null);
@@ -479,34 +462,25 @@ public class ArActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void placeTextView(View view, Anchor anchor, boolean isInstruction) {
+    private void placeTextView(View view, Anchor anchor) {
         ViewRenderable.builder()
                 .setView(this, view)
                 .build()
                 .thenAccept(viewRenderable -> {
-                    placeInstant(viewRenderable, anchor, isInstruction);
+                    placeInstant(viewRenderable, anchor);
                 });
     }
 
-    private void placeInstant(ViewRenderable viewRenderable, Anchor anchor, boolean isInstruction) {
+    private void placeInstant(ViewRenderable viewRenderable, Anchor anchor) {
         ArSceneView sceneView = arFragment.getArSceneView();
 
-        if (this.anchor != null && !isInstruction) {
-            this.anchor = anchor;
-            if (!instructionAnchors.isEmpty()) {
-                for (Anchor a : instructionAnchors) {
-                    a.detach();
-                }
-                instructionAnchors.clear();
-            }
+        if (this.anchor != null) {
             anchorNode.removeChild(node);
             sceneView.getScene().removeChild(anchorNode);
             this.anchor.detach();
-        } else if (isInstruction) {
-            instructionAnchors.add(anchor);
-        } else {
-            this.anchor = anchor;
         }
+
+        this.anchor = anchor;
 
         anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(sceneView.getScene());

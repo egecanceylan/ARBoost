@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     int MY_SCAN_REQUEST_CODE = 111;
     private CardAPI cardAPI;
     private ProgressBar progressBar;
+    private RelativeLayout homePage, progressPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         info = findViewById(R.id.main_info_button);
         cardAPI = RetrofitClient.getInstances().getCardAPI();
         progressBar = findViewById(R.id.main_progress_bar);
+        homePage = findViewById(R.id.main_home_page);
+        progressPage = findViewById(R.id.main_progress_page);
 
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeApiCall(String cardNumber, int userId) {
-        scan.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        homePage.setVisibility(View.GONE);
+        progressPage.setVisibility(View.VISIBLE);
         Call<JsonObject> call = cardAPI.getCard(cardNumber, userId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -137,21 +142,27 @@ public class MainActivity extends AppCompatActivity {
                                 eAccountStatement, accountNumber, type, userModel, accountLimit,
                                 currentDebt, totalDebt, balance, flexibleAccountLimit, isContactless, isEcom, mailOrder, isAutomated, isCurrency);
 
-                        scan.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Intent intent = new Intent(MainActivity.this, ArActivity.class);
-                        intent.putExtra("cardModel", cardModel);
-                        startActivity(intent);
+                        // Make user wait for 2.5 seconds in order to read instructions
+                        Handler handler = new Handler();
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(MainActivity.this, ArActivity.class);
+                                intent.putExtra("cardModel", cardModel);
+                                startActivityForResult(intent, 0);
+                            }
+                        };
+                        handler.postDelayed(runnable, 2500);
                     }
-                    else{
-                        scan.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.INVISIBLE);
+                    else {
+                        progressPage.setVisibility(View.GONE);
+                        homePage.setVisibility(View.VISIBLE);
                         System.out.println("Body NULL!!");
                     }
                 }
                 else{
-                    scan.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressPage.setVisibility(View.GONE);
+                    homePage.setVisibility(View.VISIBLE);
                     System.out.println(response.code());
                     if (response.code() == 400) {
                         try {
@@ -170,8 +181,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                scan.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
+                progressPage.setVisibility(View.GONE);
+                homePage.setVisibility(View.VISIBLE);
                 System.out.println(t.getMessage());
             }
         });
@@ -217,6 +228,10 @@ public class MainActivity extends AppCompatActivity {
             // xxxxxxxxxxxxxxxx format in order to make API call
             resultDisplayStr = resultDisplayStr.split(":")[1].replace(" ", "").substring(0, 16);
             makeApiCall(resultDisplayStr, 1);
+        } else if (requestCode == 0) {
+            // If user come back from ar activity render main page
+            progressPage.setVisibility(View.GONE);
+            homePage.setVisibility(View.VISIBLE);
         }
     }
 }
